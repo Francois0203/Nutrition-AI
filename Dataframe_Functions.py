@@ -6,6 +6,9 @@ import numpy as np
 import tkinter as tk
 from tkinter import filedialog 
 
+# Global variables
+data_location = os.path.join(os.getcwd(), "Resources", "Data")
+
 # Read csv file into a dataframe
 def create_dataframe(file_path, name):
     file = os.path.join(file_path, name)
@@ -79,14 +82,30 @@ def get_directory():
     return directory
 
 def __main__():
+    # Variables
+    global data_location
+
     # Get working directory
     script_directory = get_working_directory()
     print("Working directory: ", script_directory)
 
-    # Create dataframe from data
-    print("\nSelect the location where the data is stored.\n")
-    data_location = get_directory()
-    df = create_dataframe(data_location, 'users.csv')
+    # Change data directory
+    change = input("Do you want to change the directory where your data is stored?:\n1. Yes\n2. No\nYour choice (1 or 2): ")
+
+    if change == '1':
+        print("\nSelect the location where the data is stored.\n")
+        data_loc = get_directory()
+    elif change == '2':
+        data_loc = data_location
+    else:
+        print("Invalid choice. Exiting...")
+        data_loc = data_location
+
+    print("Data is found at: ", data_loc)
+
+    # Create dataframe from data stored in specific 'Data' directory
+    df = create_dataframe(data_loc, 'users.csv')
+    print(df)
 
 if __name__ == '__main__':
     __main__()
