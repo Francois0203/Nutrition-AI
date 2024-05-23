@@ -7,21 +7,7 @@ import tkinter as tk
 from tkinter import filedialog 
 
 # Global variables
-data_location = os.path.join(os.getcwd(), "Resources", "Data")
-
-# Read csv file into a dataframe
-def create_dataframe(file_path, name):
-    file = os.path.join(file_path, name)
-
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"The file '{file_path}' was not found.")
-    
-    try:
-        df = pd.DataFrame(pd.read_csv(file, header = 0))
-    except Exception as e:
-        raise ValueError(f"An error occurred while reading the file: {e}")
-
-    return df
+DATA_LOCATION = os.path.join(os.getcwd(), "Resources", "Data")
 
 # Create subset of columns from dataset
 def create_subset(df, vars):
@@ -83,7 +69,7 @@ def get_directory():
 
 def __main__():
     # Variables
-    global data_location
+    global DATA_LOCATION
 
     # Get working directory
     script_directory = get_working_directory()
@@ -96,16 +82,12 @@ def __main__():
         print("\nSelect the location where the data is stored.\n")
         data_loc = get_directory()
     elif change == '2':
-        data_loc = data_location
+        data_loc = DATA_LOCATION
     else:
         print("Invalid choice. Exiting...")
-        data_loc = data_location
+        data_loc = DATA_LOCATION
 
     print("Data is found at: ", data_loc)
-
-    # Create dataframe from data stored in specific 'Data' directory
-    df = create_dataframe(data_loc, 'users.csv')
-    print(df)
 
 if __name__ == '__main__':
     __main__()
