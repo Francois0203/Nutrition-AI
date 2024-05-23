@@ -1,5 +1,3 @@
-customtkinter
 pandas
 numpy
-seaborn
 matplotlib

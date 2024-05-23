@@ -7,17 +7,12 @@ sys.path.append(os.getcwd())
 # Import custom libraries
 import Dataframe_Functions as DF
 
-# Global variables
-DATA_LOCATION = os.path.join(os.getcwd(), "Resources", "Data")
-
 def __main__():
     # Variables
-    global DATA_LOCATION
-
-    variables = ["Category", "Description", "Carbohydrate", "Cholesterol", "Choline", "Fiber", "Kilocalories", "Protein", "Sugar Total", "Water", "Monosaturated Fat", "Polysaturated Fat", "Saturated Fat", "Total Lipid"]
+    data_location = os.path.join(os.getcwd(), "Resources", "Data")
 
     # Create a dataframe from the food.csv file
-    df = pd.read_csv(os.path.join(DATA_LOCATION, 'food.csv'), 
+    df = pd.read_csv(os.path.join(data_location, 'food.csv'), 
                         sep = ';;', # Specify delimiter as ';;'
                         engine = 'python', 
                         header = None,

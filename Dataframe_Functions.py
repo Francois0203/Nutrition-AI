@@ -9,6 +9,21 @@ from tkinter import filedialog
 # Global variables
 DATA_LOCATION = os.path.join(os.getcwd(), "Resources", "Data")
 
+# Create a dataframe from a csv file
+def csv_to_dataframe(file):
+    try:
+        df = pd.read_csv(file)
+        return df
+    except FileNotFoundError:
+        print(f"Error: File not found at '{file}'")
+        return None
+    except pd.errors.EmptyDataError:
+        print(f"Error: CSV file at '{file}' is empty")
+        return None
+    except pd.errors.ParserError:
+        print(f"Error: Parsing error while reading '{file}'")
+        return None
+
 # Create subset of columns from dataset
 def create_subset(df, vars):
     if vars:
@@ -83,11 +98,10 @@ def __main__():
         data_loc = get_directory()
     elif change == '2':
         data_loc = DATA_LOCATION
+        print("Data is found at: ", data_loc)
     else:
         print("Invalid choice. Exiting...")
         data_loc = DATA_LOCATION
-
-    print("Data is found at: ", data_loc)
 
 if __name__ == '__main__':
     __main__()
