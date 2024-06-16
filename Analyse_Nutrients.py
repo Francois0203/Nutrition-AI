@@ -32,7 +32,7 @@ def __main__():
             print("\nInvalid choice!\n")
 
     # Create dataframe from csv file
-    df_raw = DF.csv_to_dataframe(os.path.join(data_location, 'food_cleaned.csv'))
+    df_raw = DF.csv_to_dataframe(os.path.join(data_location, 'food_cleaned.csv'), delim = ";")
     df = DF.create_subset(df = df_raw, vars = variables)
     print(df.head())
 

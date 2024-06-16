@@ -10,9 +10,9 @@ from tkinter import filedialog
 DATA_LOCATION = os.path.join(os.getcwd(), "Resources", "Data")
 
 # Create a dataframe from a csv file
-def csv_to_dataframe(file):
+def csv_to_dataframe(file, delim):
     try:
-        df = pd.read_csv(file)
+        df = pd.read_csv(file, delimiter = delim)
         return df
     except FileNotFoundError:
         print(f"Error: File not found at '{file}'")
