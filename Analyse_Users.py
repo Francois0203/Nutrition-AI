@@ -1,15 +1,13 @@
 import os, sys
-import pandas, numpy
+import pandas as pd, numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
 # Import custom libraries
 import Dataframe_Functions as DF
 import File_Handling as FH
-
-# Create dataframe from the CSV file containing all the data
-def create_user_df(data_location):
-    df = DF.csv_to_dataframe(data_location, ",")
-
-    return df
 
 # Calculate body mass index and classify accordingly
 def calculate_bmi(weight, height):
@@ -53,13 +51,67 @@ def calculate_whr(gender, waist, hip):
 
     return whr, classification
 
+# Train fat and muscle percentage prediction models with user dataset
+def train_models(df):
+    # Define features and target variables
+    X = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1)
+    y_fat = df["Body Fat(%)"]
+    y_muscle = df["Muscle(%)"]
+
+    # Split data
+    X_train, X_test, y_fat_train, y_fat_test, y_muscle_train, y_muscle_test = train_test_split(
+        X, y_fat, y_muscle, test_size = 0.2, random_state = 42
+    )
+
+    # Choose and train a model (example: Random Forest)
+    model_fat = RandomForestRegressor(n_estimators = 100, random_state = 42)
+    fat_history = model_fat.fit(X_train, y_fat_train)
+
+    model_muscle = RandomForestRegressor(n_estimators = 100, random_state = 42)
+    muscle_history = model_muscle.fit(X_train, y_muscle_train)
+
+    # Evaluate model performance
+    y_fat_pred = model_fat.predict(X_test)
+    y_muscle_pred = model_muscle.predict(X_test)
+    mse_fat = mean_squared_error(y_fat_test, y_fat_pred)
+    mse_muscle = mean_squared_error(y_muscle_test, y_muscle_pred)
+
+    print("Mean Squared Error (Fat):", mse_fat)
+    print("Mean Squared Error (Muscle):", mse_muscle)
+
+    return model_fat, model_muscle
+
+# Use models to predict fat and muscle percentage from user data
+def predict_composition(input, model_fat, model_muscle):
+    predicted_fat = model_fat.predict(input)[0]
+    predicted_muscle = model_muscle.predict(input)[0]
+
+    return predicted_fat, predicted_muscle
+
 def __main__():
-    # Create dataframe
-    df = create_user_df(os.path.join(os.getcwd(), "Resources", "Data", 'users_new_2.csv'))
-    bmi, classification = calculate_bmi(87, 185)
-    #bai, classification = calculate_bai(84, 185)
-    #whr, classification = calculate_whr('M', 84, 103)
-    print(f"BMI: {bmi:.2f}, Classification: {classification}")
+    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'users_new.csv'), ",") # Create dataframe
+
+    # Train fat and muscle prediction models 
+    fat_modl, muscle_modl = train_models(df)
+
+    # Get user input
+    age = int(input("Enter age: "))
+    gender = float(input("Enter gender (1 = Male or 0 = Female): "))
+    weight = float(input("Enter weight (kg): "))
+    height = float(input("Enter height (cm): "))
+    calories = float(input("Enter daily average calories intake: "))
+    protein = float(input("Enter daily average protein intake (g): "))
+    fat = float(input("Enter daily average fat intake (g): "))
+    carbs = float(input("Enter daily average carbs intake (g): "))
+    sugar = float(input("Enter daily average sugar intake (g): "))
+    exercise = float(input("Enter how many times you exercise per week (1 - 7): "))
+    waist = float(input("Enter waist circumference (cm): "))
+    hip = float(input("Enter hip circumference (cm): "))
+    data = pd.DataFrame([[age, gender, weight, height, calories, protein, fat, carbs, sugar, exercise, waist, hip]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns)
+
+    # Predict body fat and muscle % using trained models
+    predicted_fat, predicted_muscle = predict_composition(data, fat_modl, muscle_modl)
+    print(f"Predicted fat (%): {predicted_fat:.2f}, Predicted muscle (%): {predicted_muscle:.2f}")
 
 if __name__ == '__main__':
     __main__()
