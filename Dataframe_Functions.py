@@ -37,7 +37,7 @@ def create_subset(df, vars):
 
     return df
 
-# Get specific record from dataframe
+# Get specific record from dataframe that has a certain variable value
 def get_record(df, field, value): 
     selected_rows = df.loc[df[field] == value]
 
