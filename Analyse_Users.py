@@ -55,7 +55,7 @@ def calculate_whr(gender, waist, hip):
 
 def __main__():
     # Create dataframe
-    df = create_user_df(os.path.join(os.getcwd(), "Resources", "Data", 'users.csv'))
+    df = create_user_df(os.path.join(os.getcwd(), "Resources", "Data", 'users_new_2.csv'))
     bmi, classification = calculate_bmi(87, 185)
     #bai, classification = calculate_bai(84, 185)
     #whr, classification = calculate_whr('M', 84, 103)
