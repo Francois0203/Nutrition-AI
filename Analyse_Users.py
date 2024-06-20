@@ -1,9 +1,12 @@
 import os, sys
 import pandas as pd, numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import GradientBoostingRegressor
 
 # Import custom libraries
 import Dataframe_Functions as DF
@@ -52,9 +55,9 @@ def calculate_whr(gender, waist, hip):
     return whr, classification
 
 # Train fat and muscle percentage prediction models with user dataset
-def train_models(df):
+def predict_composition(df, input):
     # Define features and target variables
-    X = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1)
+    X = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1)
     y_fat = df["Body Fat(%)"]
     y_muscle = df["Muscle(%)"]
 
@@ -63,12 +66,22 @@ def train_models(df):
         X, y_fat, y_muscle, test_size = 0.2, random_state = 42
     )
 
-    # Choose and train a model (example: Random Forest)
-    model_fat = RandomForestRegressor(n_estimators = 100, random_state = 42)
-    fat_history = model_fat.fit(X_train, y_fat_train)
+    # Hyperparameter tuning for Random Forest
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_depth': [None, 10, 20]
+    }
 
-    model_muscle = RandomForestRegressor(n_estimators = 100, random_state = 42)
-    muscle_history = model_muscle.fit(X_train, y_muscle_train)
+    # Choose and train the models
+    model_fat = GridSearchCV(RandomForestRegressor(random_state = 42), param_grid, cv = 5)
+    #model_fat = RandomForestRegressor(n_estimators = 100, random_state = 42)
+    #model_fat = GradientBoostingRegressor(random_state = 42)
+    model_fat.fit(X_train, y_fat_train)
+
+    model_muscle = GridSearchCV(RandomForestRegressor(random_state = 42), param_grid, cv = 5)
+    #model_muscle = RandomForestRegressor(n_estimators = 100, random_state = 42)
+    #model_muscle = GradientBoostingRegressor(random_state = 42)
+    model_muscle.fit(X_train, y_muscle_train)
 
     # Evaluate model performance
     y_fat_pred = model_fat.predict(X_test)
@@ -76,41 +89,49 @@ def train_models(df):
     mse_fat = mean_squared_error(y_fat_test, y_fat_pred)
     mse_muscle = mean_squared_error(y_muscle_test, y_muscle_pred)
 
-    print("Mean Squared Error (Fat):", mse_fat)
-    print("Mean Squared Error (Muscle):", mse_muscle)
-
-    return model_fat, model_muscle
-
-# Use models to predict fat and muscle percentage from user data
-def predict_composition(input, model_fat, model_muscle):
+    # Use models to predict fat and muscle percentage from user data
     predicted_fat = model_fat.predict(input)[0]
     predicted_muscle = model_muscle.predict(input)[0]
 
+    # Plot results to see how the models perform
+    plot_results(model_fat, X_test, y_fat_test, "Body fat (%) prediction: Actual vs. predicted")
+    plot_results(model_muscle, X_test, y_muscle_test, "Muscle mass (%) prediction: Actual vs. predicted")
+
     return predicted_fat, predicted_muscle
 
-def __main__():
-    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'users_new.csv'), ",") # Create dataframe
+def plot_results(model, x_test, y_test, title):
+    y_pred = model.predict(x_test)
+    plt.scatter(y_test, y_pred)
+    plt.xlabel("Actual Values")
+    plt.ylabel("Predicted Values")
+    plt.title(title)
 
-    # Train fat and muscle prediction models 
-    fat_modl, muscle_modl = train_models(df)
+    # Regression Line and Error Bands
+    z = np.polyfit(y_test, y_pred, 1)  # Fit a linear regression
+    p = np.poly1d(z)
+    plt.plot(y_test, p(y_test), color = 'green', linestyle = '-', label = 'Regression Line')
+
+    # Standard error of the estimate (SEE)
+    residuals = y_test - p(y_test)
+    std_error = np.std(residuals)
+
+    plt.fill_between(y_test, p(y_test) - 1.96*std_error, p(y_test) + 1.96*std_error, alpha = 0.2, color = 'red', label = '95% Confidence Interval')
+
+    plt.legend()
+    plt.show()
+
+def __main__():
+    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'users.csv'), ",") # Create dataframe
 
     # Get user input
-    age = int(input("Enter age: "))
-    gender = float(input("Enter gender (1 = Male or 0 = Female): "))
-    weight = float(input("Enter weight (kg): "))
-    height = float(input("Enter height (cm): "))
-    calories = float(input("Enter daily average calories intake: "))
-    protein = float(input("Enter daily average protein intake (g): "))
-    fat = float(input("Enter daily average fat intake (g): "))
-    carbs = float(input("Enter daily average carbs intake (g): "))
-    sugar = float(input("Enter daily average sugar intake (g): "))
-    exercise = float(input("Enter how many times you exercise per week (1 - 7): "))
-    waist = float(input("Enter waist circumference (cm): "))
-    hip = float(input("Enter hip circumference (cm): "))
-    data = pd.DataFrame([[age, gender, weight, height, calories, protein, fat, carbs, sugar, exercise, waist, hip]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns)
+    #data = pd.DataFrame([[age, gender, weight, height, exercise, waist, hip]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns)
+    #data = pd.DataFrame([[22, 1, 87, 185, 4, 85, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
+    data = pd.DataFrame([[53, 0, 83, 162, 2, 97, 118]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Linda
+    #data = pd.DataFrame([[20, 0, 46, 155, 1, 66, 86]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Lientjie
+    #data = pd.DataFrame([[57, 1, 88, 179, 3, 106, 109]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Jacques
 
     # Predict body fat and muscle % using trained models
-    predicted_fat, predicted_muscle = predict_composition(data, fat_modl, muscle_modl)
+    predicted_fat, predicted_muscle = predict_composition(df, data)
     print(f"Predicted fat (%): {predicted_fat:.2f}, Predicted muscle (%): {predicted_muscle:.2f}")
 
 if __name__ == '__main__':
