@@ -10,8 +10,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.svm import SVR
 
 # Import custom libraries
-import Dataframe_Functions as DF
-import File_Handling as FH
+import Dataframe_Functions as DF, File_Handling as FH
 
 # Calculate body mass index and classify accordingly
 def calculate_bmi(weight, height):
@@ -54,6 +53,45 @@ def calculate_whr(gender, waist, hip):
         else: classification = "Obese"
 
     return whr, classification
+
+def calculate_exercise_level(exercise_level):
+    if (exercise_level == 0) or (exercise_level == 1) or (exercise_level == 2) or (exercise_level == 3):
+        category = "sedentary"
+    elif (exercise_level == 4) or (exercise_level == 5):
+        category = "lightly active"
+    elif (exercise_level == 6) or (exercise_level == 7):
+        category = "moderately active"
+    elif (exercise_level == 8) or (exercise_level == 9):
+        category = "very active"
+    elif (exercise_level == 10):
+        "extra active"
+    else:
+        raise ValueError("Invalid exercise level. Please enter a number between 0 and 10. ")
+
+    return category
+
+# Calculate calories burned during a day with a certain exercise level
+def calculate_maintenance_calories(age, weight, height, gender, exercise_category):
+    if gender == 1:
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5
+    elif gender == 0:
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161
+    else:
+        raise ValueError("Invalid gender. Please enter 'male' or 'female'.")
+
+    # Activity Level Multipliers
+    activity_multipliers = {
+        "sedentary": 1.2,
+        "lightly active": 1.375,
+        "moderately active": 1.55,
+        "very active": 1.725,
+        "extra active": 1.9,
+    }
+
+    # Calculate Total Daily Energy Expenditure (TDEE)
+    tdee = bmr * activity_multipliers[exercise_category.lower()] # Mifflin-St. Jeor Equation
+
+    return tdee
 
 # Train fat and muscle percentage prediction models with user dataset
 def predict_composition(df, input):
@@ -137,18 +175,17 @@ def plot_results(model, x_test, y_test, title):
     plt.show()
 
 def __main__():
-    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fitness_data.csv'), ",") # Create dataframe
+    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fitness.csv'), ",") # Create dataframe
 
-    # Get user input
-    #data = pd.DataFrame([[age, gender, weight, height, exercise, waist, hip]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns)
-    #data = pd.DataFrame([[22, 1, 87, 185, 4, 85, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
-    #data = pd.DataFrame([[53, 0, 83, 162, 2, 97, 118]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Linda
-    #data = pd.DataFrame([[20, 0, 46, 155, 1, 66, 86]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Lientjie
-    data = pd.DataFrame([[57, 1, 88, 179, 3, 106, 109]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Jacques
-
+    data = pd.DataFrame([[22, 1, 87, 185, 4, 85, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
+    
     # Predict body fat and muscle % using trained models
     predicted_fat, predicted_muscle = predict_composition(df, data)
     print(f"Predicted fat (%): {predicted_fat:.2f}, Predicted muscle (%): {predicted_muscle:.2f}")
+
+    # Predict maintenance calories
+    main_cals = calculate_maintenance_calories(22, 87, 185, 1, calculate_exercise_level(4))
+    print("Maintenance calories: ", main_cals)
 
 if __name__ == '__main__':
     __main__()

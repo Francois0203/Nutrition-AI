@@ -1,4 +1,5 @@
 Age,Gender,Weight(Kg),Height(cm),Muscle(%),Body Fat(%),Daily Average Calorie Intake,Daily Average Protein Intake(g),Daily Average Fat Intake(g),Daily Average Carb Intake(g),Daily Average Sugar Intake(g),Exercise per week,Waist circumference (cm),Hip circumference (cm)
+22,1,87,185,42,23,3000,80,40,350,50,6,87,103
 28,1,85,183,42,18,2800,150,100,300,40,5,90,102
 35,0,68,165,35,25,1800,100,60,200,30,3,75,95
 42,1,92,178,40,20,2500,140,80,280,50,4,98,104

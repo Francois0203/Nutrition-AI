@@ -6,6 +6,16 @@ from tkinter import filedialog
 def directory_exists(path):
     return os.path.exists(path)
 
+def dataframe_to_csv(df, data_location, name):
+    save = name + '.csv'
+
+    # Save subset dataframe to a CSV file
+    if os.path.isfile(os.path.join(data_location, save)):
+        print(os.path.join(data_location, save), " already exists.")
+    else:
+        df.to_csv(os.path.join(data_location, save), sep = ',')
+        print(os.path.join(data_location, save), " has successfully been created and saved.") 
+
 # Get current working directory
 def get_working_directory():
     script_directory = os.path.dirname(os.path.abspath(__file__))
