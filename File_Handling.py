@@ -13,7 +13,7 @@ def dataframe_to_csv(df, data_location, name):
     if os.path.isfile(os.path.join(data_location, save)):
         print(os.path.join(data_location, save), " already exists.")
     else:
-        df.to_csv(os.path.join(data_location, save), sep = ',')
+        df.to_csv(os.path.join(data_location, save), sep = ',', index = False)
         print(os.path.join(data_location, save), " has successfully been created and saved.") 
 
 # Get current working directory
