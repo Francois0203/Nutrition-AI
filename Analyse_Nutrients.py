@@ -26,78 +26,18 @@ def extract_healthy_items(df, data_location):
 
     FH.dataframe_to_csv(df_final, data_location, "healthy_food")
 
-def optimize_macros(df, goal, target_calories, target_protein, target_fat, target_carbs):
-    # Define target_macros dictionary
-    target_macros = {
-        "Kilocalories": target_calories,
-        "Protein": target_protein,
-        "Total Lipid": target_fat,
-        "Carbohydrate": target_carbs,
-    }
-
-    # Filtering based on goal
-    if goal == "weight loss":
-        df_filtered = df[df["Kilocalories"] < target_calories] 
-        df_filtered = df_filtered.sort_values(by = ["Fiber", "Protein"], ascending = [False, False]) 
-    elif goal == "weight gain":
-        df_filtered = df[df["Kilocalories"] > target_calories]
-        df_filtered = df_filtered.sort_values(by = ["Kilocalories"], ascending = [False])
-    elif goal == "lean muscle gain":
-        df_filtered = df.sort_values(by=["Fiber", "Protein"], ascending=[False, False])
-    elif goal == "muscle and weight gain":
-        df_filtered = df[df["Kilocalories"] > target_calories]
-        df_filtered = df_filtered.sort_values(by = ["Kilocalories", "Protein"], ascending= [False, False])
-    elif goal == "maintain weight":
-        df_filtered = df[df["Kilocalories"] == target_calories]
-    else:
-        return pd.DataFrame()  # Return an empty DataFrame if goal is invalid
-
-    # Combining foods to reach targets
-    selected_foods = []
-    current_macros = {"Kilocalories": 0, "Protein": 0, "Total Lipid": 0, "Carbohydrate": 0}
-    
-    for index, row in df_filtered.iterrows():
-        new_macros = {
-            "Kilocalories": current_macros["Kilocalories"] + row["Kilocalories"],
-            "Protein": current_macros["Protein"] + row["Protein"],
-            "Total Lipid": current_macros["Total Lipid"] + row["Total Lipid"],
-            "Carbohydrate": current_macros["Carbohydrate"] + row["Carbohydrate"],
-        }
-        
-        # Check if the new food gets us closer to the target. If overshoot, skip the food.
-        if all(new_macros[macro] <= target_macros[macro] for macro in current_macros):
-            selected_foods.append(row)
-            current_macros = new_macros
-
-            # If targets are met, exit the loop
-            if all(current_macros[macro] >= target_macros[macro] for macro in current_macros):
-                break
-
-    return pd.DataFrame(selected_foods)
-
 def generate_meals(food_data, protein_goal, calorie_goal, fat_goal, carb_goal, num_meals=3):
-    """Generates meal combinations based on nutritional goals.
-
-    Args:
-        food_data (pd.DataFrame): DataFrame containing food data (as described).
-        protein_goal (float): Target protein intake in grams.
-        calorie_goal (float): Target calorie intake.
-        fat_goal (float): Target fat intake in grams.
-        carb_goal (float): Target carbohydrate intake in grams.
-        num_meals (int, optional): Number of meals to generate (default 3).
-
-    Returns:
-        list: List of dictionaries, each representing a meal with food items and quantities.
-    """
-
     # Filter out unsuitable items (too high in a single nutrient, extremely small portions)
     filtered_data = food_data[
-        (food_data["Protein"] < protein_goal * 0.7) &
-        (food_data["Kilocalories"] < calorie_goal * 0.7) &
-        (food_data["Total Lipid"] < fat_goal * 0.7) &
-        (food_data["Carbohydrate"] < carb_goal * 0.7) &
-        (food_data["1st Household Weight"] > 10)  # Ensure a minimum serving size
-    ]
+        (food_data["Protein"] < protein_goal * 0.7)
+        & (food_data["Kilocalories"] < calorie_goal * 0.7)
+        & (food_data["Total Lipid"] < fat_goal * 0.7)
+        & (food_data["Carbohydrate"] < carb_goal * 0.7)
+        & (food_data["1st Household Weight"] > 10)  # Ensure a minimum serving size
+    ].copy()  # Create a copy to avoid modifying the original DataFrame
+
+    # Add a new column for portion size in grams
+    filtered_data["Portion_Grams"] = filtered_data["1st Household Weight"] * 100
 
     meals = []
     for _ in range(num_meals):
@@ -110,31 +50,42 @@ def generate_meals(food_data, protein_goal, calorie_goal, fat_goal, carb_goal, n
         }
 
         while any(val > 0 for val in remaining_nutrients.values()):
-            # Randomly select a food item
-            food_item = filtered_data.sample(1).iloc[0]
+            # Prioritize items that contribute most to remaining nutrients
+            filtered_data["Priority"] = filtered_data.apply(
+                lambda row: sum(
+                    remaining_nutrients[nutrient] / max(1, row[nutrient])  # Avoid division by zero
+                    for nutrient in remaining_nutrients
+                ),
+                axis=1,
+            )
+            food_item = filtered_data.nlargest(1, "Priority").iloc[0]
 
-            # Adjust quantity based on remaining nutrients and food item's nutritional content
+            # Adjust quantity based on remaining nutrients, portion size, and food item's nutritional content
             max_quantity = min(
-                remaining_nutrients[nutrient] / food_item[nutrient]
+                (remaining_nutrients[nutrient] / max(1, food_item[nutrient]))  # Avoid division by zero
+                * food_item["Portion_Grams"]
                 for nutrient in remaining_nutrients
             )
 
-            # Ensure we add at least a small amount of the food item
-            quantity = max(0.1, max_quantity)
+            # Ensure we add at least one serving and round to nearest serving size
+            quantity = max(food_item["Portion_Grams"], max_quantity)
+            servings = round(quantity / food_item["Portion_Grams"])
 
             # Add the food item and quantity to the meal
-            meal[food_item["Description"]] = round(quantity, 2)
+            meal[food_item["Description"]] = servings
 
             # Update remaining nutrients
             for nutrient in remaining_nutrients:
-                remaining_nutrients[nutrient] -= food_item[nutrient] * quantity
+                remaining_nutrients[nutrient] -= food_item[nutrient] * servings
+
+            # Remove the used item to avoid repetition
+            filtered_data = filtered_data.drop(food_item.name)
 
         meals.append(meal)
     return meals
 
 def display_meals(meals, food_data):
-    """Displays meals in a tabulated format with nutritional information."""
-    for i, meal in enumerate(meals, start=1):
+    for i, meal in enumerate(meals, start = 1):
         print(f"\nMeal {i}:")
         meal_data = []
 
@@ -162,7 +113,7 @@ def display_meals(meals, food_data):
                 total_nutrients[nutrient] += food_info[nutrient] * quantity
 
         # Display the meal table
-        print(tb.tabulate(meal_data, headers=["Food", "Quantity", "Calories", "Protein", "Fat", "Carbs"]))
+        print(tb.tabulate(meal_data, headers = ["Food", "Quantity", "Calories", "Protein", "Fat", "Carbs"]))
 
         # Display total meal nutrients
         print("\nTotal Nutrients:")
