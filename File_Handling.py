@@ -7,30 +7,24 @@ def directory_exists(path):
     return os.path.exists(path)
 
 def dataframe_to_csv(df, data_location, name):
-    save = name + '.csv'
-
     # Save subset dataframe to a CSV file
-    if os.path.isfile(os.path.join(data_location, save)):
-        print(os.path.join(data_location, save), " already exists.")
+    if os.path.isfile(os.path.join(data_location, name + '.csv')):
+        print(os.path.join(data_location, name + '.csv'), " already exists.")
     else:
-        df.to_csv(os.path.join(data_location, save), sep = ',', index = False)
-        print(os.path.join(data_location, save), " has successfully been created and saved.") 
+        df.to_csv(os.path.join(data_location, name + '.csv'), sep = ',', index = False)
+        print(os.path.join(data_location, name + '.csv'), " has successfully been created and saved.") 
 
 # Get current working directory
 def get_working_directory():
-    script_directory = os.path.dirname(os.path.abspath(__file__))
-
-    return script_directory
+    return os.path.dirname(os.path.abspath(__file__))
 
 # Create a folder in a specific location if it does not yet exist
 def create_folder(name, location):
 
-    data_directory = os.path.join(location, name)
-
     if directory_exists == False:
-        os.makedirs(data_directory, exist_ok = True)
+        os.makedirs(os.path.join(location, name), exist_ok = True)
 
-    return data_directory
+    return os.path.join(location, name)
 
 # Select a save location
 def get_directory():
