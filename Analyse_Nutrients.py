@@ -26,7 +26,7 @@ def extract_healthy_items(df, data_location):
 
     FH.dataframe_to_csv(df_final, data_location, "healthy_food")
 
-def generate_meals(food_data, protein_goal, calorie_goal, fat_goal, carb_goal, num_meals=3):
+def generate_food_items(food_data, protein_goal, calorie_goal, fat_goal, carb_goal, num_meals = 3):
     # Filter out unsuitable items (too high in a single nutrient, extremely small portions)
     filtered_data = food_data[
         (food_data["Protein"] < protein_goal * 0.7)
@@ -84,7 +84,7 @@ def generate_meals(food_data, protein_goal, calorie_goal, fat_goal, carb_goal, n
         meals.append(meal)
     return meals
 
-def display_meals(meals, food_data):
+def display_food_items(meals, food_data):
     for i, meal in enumerate(meals, start = 1):
         print(f"\nMeal {i}:")
         meal_data = []
@@ -129,8 +129,8 @@ def __main__():
     extract_healthy_items(df, os.path.join(os.getcwd(), "Resources", "Data"))
     healthy_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "healthy_food.csv"), ',')
 
-    meals = generate_meals(df, 100, 2000, 70, 250)
-    display_meals(meals, df)
+    meals = generate_food_items(healthy_df, 100, 2000, 70, 250)
+    display_food_items(meals, healthy_df)
 
 if __name__ == '__main__':
     __main__()
