@@ -3,7 +3,7 @@ import pandas as pd, numpy as np, tabulate as tb
 from pulp import *
 
 # Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH
+import Dataframe_Functions as DF, File_Handling as FH, User_Calculations as UC
 
 # Create nutrient dataframe
 def create_nutrient_file(data_location, name):
@@ -122,15 +122,80 @@ def display_food_items(meals, food_data):
         print(f"  Fat: {total_nutrients['Total Lipid']:.1f} g")
         print(f"  Carbs: {total_nutrients['Carbohydrate']:.1f} g")
 
+def process_meal_calories(file_path):
+    df = DF.csv_to_dataframe(file_path, ',')
+
+    # Caloric values per gram
+    PROTEIN_CALORIES_PER_GRAM = 4
+    FAT_CALORIES_PER_GRAM = 9
+    CARB_CALORIES_PER_GRAM = 4
+
+    # Calculate calories per meal
+    df["Calories"] = df["Protein(g)"]*PROTEIN_CALORIES_PER_GRAM + df["Carbs(g)"]*FAT_CALORIES_PER_GRAM + df["Fat(g)"]*CARB_CALORIES_PER_GRAM
+    df.to_csv(file_path, index = False)  # index = False to avoid adding an index colum
+
+def optimise_meals(df, goal, diet_type, macros, num_meals):
+    # Filter by diet type (if specified)
+    if diet_type.lower() != "any":
+        df = df[df["Diet_type"].str.lower() == diet_type.lower()]
+
+    # Calculate macro ranges for each meal 
+    macro_ranges = {
+        "Protein(g)": (macros["protein grams"] / num_meals * 0.8, macros["protein grams"] / num_meals * 1.2),  # 20% flexibility
+        "Carbs(g)": (macros["carb grams"] / num_meals * 0.8, macros["carb grams"] / num_meals * 1.2),
+        "Fat(g)": (macros["fat grams"] / num_meals * 0.8, macros["fat grams"] / num_meals * 1.2),
+    }
+
+    # Filter meals that fit within macro ranges
+    filtered_df = df[
+        (df["Protein(g)"] >= macro_ranges["Protein(g)"][0]) & (df["Protein(g)"] <= macro_ranges["Protein(g)"][1]) &
+        (df["Carbs(g)"] >= macro_ranges["Carbs(g)"][0]) & (df["Carbs(g)"] <= macro_ranges["Carbs(g)"][1]) &
+        (df["Fat(g)"] >= macro_ranges["Fat(g)"][0]) & (df["Fat(g)"] <= macro_ranges["Fat(g)"][1])
+    ]
+
+    # Prioritize meals based on goal
+    if goal.lower() == "lose weight":
+        filtered_df = filtered_df.sort_values("Calories", ascending = True)
+    elif goal.lower() in ["gain weight", "gain lean muscle"]:
+        filtered_df = filtered_df.sort_values("Calories", ascending = False)
+
+    # Sample meals (or all if less than requested amount are found)
+    recommended_meals = filtered_df.sample(n = min(num_meals, len(filtered_df))).to_dict(orient = "records")
+
+    return recommended_meals
+
+def format_meal_recommendations(meal_list):    
+    if not meal_list:  # Check if list is empty
+        print("No suitable meal recommendations found.")
+        return
+    
+    # Print header
+    print("{:<10} {:<35} {:<10} {:<10} {:<10} {:<10}".format(
+        "Diet", "Recipe", "Protein", "Carbs", "Fat", "Calories"
+    ))
+    print("-" * 85)  # Separator
+
+    # Print meal details
+    for meal in meal_list:
+        print("{:<10} {:<35} {:<10.1f} {:<10.1f} {:<10.1f} {:<10.1f}".format(
+            meal['Diet_type'], meal['Recipe_name'], meal['Protein(g)'], meal['Carbs(g)'], meal['Fat(g)'], meal['Calories']
+        ))
+
 def __main__():
-    create_nutrient_file(os.path.join(os.getcwd(), "Resources", "Data"), "food.csv")
-    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "food_subset.csv"), ',')
+    #create_nutrient_file(os.path.join(os.getcwd(), "Resources", "Data"), "food.csv")
+    #df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "food_subset.csv"), ',')
 
-    extract_healthy_items(df, os.path.join(os.getcwd(), "Resources", "Data"))
-    healthy_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "healthy_food.csv"), ',')
+    #extract_healthy_items(df, os.path.join(os.getcwd(), "Resources", "Data"))
+    #healthy_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "healthy_food.csv"), ',')
 
-    meals = generate_food_items(healthy_df, 100, 2000, 70, 250)
-    display_food_items(meals, healthy_df)
+    #food_items = generate_food_items(healthy_df, 100, 2000, 70, 250)
+    #display_food_items(food_items, healthy_df)
+
+    meal_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "all_diets.csv"), ',')
+    data = [22, 1, 87, 185, 4, 85, 103]
+    meals = optimise_meals(meal_df, "lose weight", "vegan", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
+    print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose weight"))
+    format_meal_recommendations(meals)
 
 if __name__ == '__main__':
     __main__()
