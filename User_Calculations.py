@@ -114,10 +114,10 @@ def calculate_optimal_macros(weight, muscle_percent, exercise_per_week, tdee, go
     carb_grams = carb_calories / 4
 
     return {
-        "protein_grams": round(protein_grams),
-        "carb_grams": round(carb_grams),
-        "fat_grams": round(fat_grams),
-        "total_calories": round(tdee)
+        "protein grams": round(protein_grams),
+        "carb grams": round(carb_grams),
+        "fat grams": round(fat_grams),
+        "total calories": round(tdee)
     }
 
 def __main__():

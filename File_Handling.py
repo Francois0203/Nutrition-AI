@@ -1,10 +1,14 @@
-import sys, os
+import sys, os, csv
+from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog 
 
 # Check if a file or directory exists
 def directory_exists(path):
     return os.path.exists(path)
+
+def file_exists(file_path):
+    return Path(file_path)
 
 def dataframe_to_csv(df, data_location, name):
     # Save subset dataframe to a CSV file
@@ -20,11 +24,41 @@ def get_working_directory():
 
 # Create a folder in a specific location if it does not yet exist
 def create_folder(name, location):
-
     if directory_exists == False:
         os.makedirs(os.path.join(location, name), exist_ok = True)
 
     return os.path.join(location, name)
+
+def append_to_csv(file_path, item):
+    try:
+        with open(file_path, mode = 'a', newline = '', encoding = 'utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([item]) 
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def append_value_to_rows(file_path, text_to_append):
+    temp_file_path = file_path + ".tmp"
+
+    try:
+        with open(file_path, 'r', encoding = 'utf-8') as csvfile, \
+            open(temp_file_path, 'w', newline = '', encoding = 'utf-8') as temp_csvfile:
+            reader = csv.reader(csvfile)
+            writer = csv.writer(temp_csvfile)
+
+            for row in reader:
+                writer.writerow(row + [text_to_append])  # Append to the row
+
+        # Replace original file with modified file
+        import os
+        os.remove(file_path)
+        os.rename(temp_file_path, file_path)
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 # Select a save location
 def get_directory():
@@ -48,3 +82,13 @@ def get_directory():
         return None
 
     return directory
+
+def __main__():
+    
+    file_path = os.path.join(os.getcwd(), "Resources", "Data", "all_diets_copy.csv") 
+    text_to_append = "new_value"
+
+    append_value_to_rows(file_path, text_to_append)
+
+if __name__ == "__main__":
+    __main__()
