@@ -104,11 +104,11 @@ def get_significant_variables():
     plt.show()
 
 def __main__():
-    # data = pd.DataFrame([[22, 1, 87, 185, 4, 85, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
+    data = pd.DataFrame([[22, 1, 85, 185, 2, 87, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
     
-    # # Predict body fat and muscle % using trained models
-    # predicted_fat, predicted_muscle = predict_composition(df, data)
-    # print(f"Predicted fat (%): {predicted_fat:.2f}, Predicted muscle (%): {predicted_muscle:.2f}")
+    # Predict body fat and muscle % using trained models
+    predicted_fat, predicted_muscle = predict_composition(data)
+    print(f"Predicted fat (%): {predicted_fat:.2f}, Predicted muscle (%): {predicted_muscle:.2f}")
 
     get_significant_variables()
 
