@@ -21,7 +21,7 @@ def __main__():
     hip_circumference = 103
     weight = 85
     height = 185
-    exercise_per_week = 6
+    exercise_per_week = 7
     goal = "gain lean muscle"
     diet_type = "any" 
 
