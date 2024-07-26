@@ -10,9 +10,8 @@ from sklearn.svm import SVR
 # Import custom libraries
 import Dataframe_Functions as DF, File_Handling as FH
 
-
 # Global Variables
-df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fitness_data.csv'), ",") # Create dataframe
+df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fit_data.csv'), ",") # Create dataframe
 
 # Hyperparameter tuning for Random Forest
 PARAM_GRID = {
@@ -24,7 +23,7 @@ def train_body_fat():
     global df
     global PARAM_GRID
 
-    X = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1)
+    X = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1)
     y_fat = df["Body Fat(%)"]
 
     # Split data
@@ -57,7 +56,7 @@ def train_muscle_mass():
     global df
     global PARAM_GRID
 
-    X = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1)
+    X = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1)
     y_muscle = df["Muscle(%)"]
 
     # Split data
@@ -137,11 +136,11 @@ def get_significant_variables():
     plt.show()
 
 def __main__():
-    data = pd.DataFrame([[22, 1, 85, 185, 2, 87, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
+    data = pd.DataFrame([[22, 1, 85, 185, 2, 87, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns) # Francois
 
     # Train body fat and muscle mass prediction models
-    train_body_fat()
-    train_muscle_mass()
+    # train_body_fat()
+    # train_muscle_mass()
 
     # Use trained models to predict body fat and muslce mass
     body_fat = predict_body_fat(data)
