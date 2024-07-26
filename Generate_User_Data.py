@@ -1,27 +1,6 @@
 import os, csv, random
-import numpy as np
+import numpy as np, matplotlib.pyplot as plt, pandas as pd
 from scipy.stats import norm, truncnorm
-
-def generate_data(num_entries):
-    data = []
-    for _ in range(num_entries):
-        age = random.randint(18, 80)  # Age range
-        gender = random.randint(0, 1)  # 0 for female, 1 for male
-        weight = random.randint(40, 80)  # Weight range in kg
-        height = random.randint(120, 200)  # Height range in cm
-        muscle = random.randint(25, 55)  # Muscle mass % range
-        body_fat = random.randint(0, 50)  # Body fat % range
-        calories = random.randint(1000, 3500)  # Calorie intake range
-        protein = random.randint(0, 200)  # Protein intake range in g
-        fat = random.randint(0, 120)  # Fat intake range in g
-        carbs = random.randint(0, 400)  # Carb intake range in g
-        sugar = random.randint(0, 80)  # Sugar intake range in g
-        exercise = random.randint(0, 7)  # Exercise days per week
-        waist = random.randint(40, 120)  # Waist circumference range in cm
-        hips = random.randint(50, 130)  # Hip circumference range in cm
-
-        data.append([age, gender, weight, height, muscle, body_fat, calories, protein, fat, carbs, sugar, exercise, waist, hips])
-    return data
 
 def generate_data_distributions(num_entries):
     data = []
@@ -64,16 +43,6 @@ def generate_data_distributions(num_entries):
         # Daily Calorie Intake: Revised based on updated body composition
         base_calories = 10 * weight + 6.25 * height - 5 * age + 5 if biological_sex == 1 else -161
         activity_factor = 1.2 + 0.2 * exercise  # Stronger influence of exercise on calories
-        calories = round(base_calories * activity_factor)
-
-        # Macronutrient Intake: Adjusted for varied activity levels
-        protein_factor = 1.2 + 0.1 * exercise  # More protein with more exercise
-        protein = round(weight * protein_factor) 
-        fat = round(calories * 0.25 / 9)  # Slightly lower fat percentage 
-        carbs = round((calories - protein * 4 - fat * 9) / 4)
-
-        # Sugar Intake: A portion of total carb intake
-        sugar = round(carbs * 0.2 + np.random.normal(0, 5))
 
         # Waist and Hip Circumference: Rough estimates, highly variable in reality
         if biological_sex == 0:  # Female
@@ -83,12 +52,43 @@ def generate_data_distributions(num_entries):
             waist = round(weight * 0.45 + np.random.normal(0, 6))
             hips = round(weight * 0.5 + np.random.normal(0, 6))
 
-        data.append([age, biological_sex, weight, height, muscle, body_fat, calories, protein, fat, carbs, sugar, exercise, waist, hips])
+        data.append([age, biological_sex, weight, height, muscle, body_fat, exercise, waist, hips])
+    return data
+
+def generate_data(n):
+    data = []
+    np.random.seed(42)
+
+    for _ in range(n):
+        # ==================== Age, Gender ====================
+        age = np.random.randint(18, 80)
+        gender = np.random.choice([0, 1])
+
+        # ==================== Weight, Height ====================
+        weight = np.where(gender == 0,
+                np.random.normal(70, 15),  # Female
+                np.random.normal(85, 20))  # Male
+        
+        height = np.where(gender == 0,
+                np.random.normal(165, 10),  # Female
+                np.random.normal(175, 10))  # Male
+        
+        # ==================== Waist, Hip, Exercise Per Week ====================
+        waist_circumference = weight / height * 45 + np.random.normal(0, 5)
+        hip_circumference = weight / height * 50 + np.random.normal(0, 5)
+        exercise = np.random.choice([0, 1, 2, 3, 4, 5, 6, 7])
+
+        # ==================== Body Fat %, Muscle % ====================
+        body_fat = 0.1 * weight + 0.5 * exercise - 0.2 * age + np.where(gender == 0, 5, 10) + np.random.normal(0, 2)
+        muscle = 0.3 * weight + 0.2 * exercise + 0.1 * height - 0.2 * age + np.random.normal(0, 3)
+
+        data.append([age, gender, weight, height, muscle, body_fat, exercise, waist_circumference, hip_circumference])
+
     return data
 
 def write_to_csv(data):
         # Write data to CSV
-    with open("Resources/Data/fitness_data.csv", mode = 'w', newline = '') as file:
+    with open("Resources/Data/fit_data.csv", mode = 'w', newline = '') as file:
         writer = csv.writer(file)
         writer.writerow([
             "Age",
@@ -97,11 +97,6 @@ def write_to_csv(data):
             "Height(cm)",
             "Muscle(%)",
             "Body Fat(%)",
-            "Daily Average Calorie Intake",
-            "Daily Average Protein Intake(g)",
-            "Daily Average Fat Intake(g)",
-            "Daily Average Carb Intake(g)",
-            "Daily Average Sugar Intake(g)",
             "Exercise per week",
             "Waist circumference (cm)",
             "Hip circumference (cm)",
@@ -111,12 +106,12 @@ def write_to_csv(data):
             writer.writerow(row)
 
 def __main__():
-    # Generate data entries (or adjust this number as needed)
-    num_entries = 10000
+    # Generate data entries 
+    num_entries = 20000
     data_1 = generate_data(num_entries)
     data_2 = generate_data_distributions(num_entries)
 
-    write_to_csv(data_2)
+    write_to_csv(data_1)
 
 if __name__ == "__main__":
     __main__()
