@@ -192,8 +192,9 @@ def __main__():
     #display_food_items(food_items, healthy_df)
 
     meal_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "all_diets.csv"), ',')
-    data = [22, 1, 87, 185, 4, 85, 103]
-    meals = optimise_meals(meal_df, "lose weight", "vegan", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
+    data = [22, 1, 85, 173, 5, 67, 103]
+    meals = optimise_meals(meal_df, "lose weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
+    print(UC.calculate_maintenance_calories(22, 85, 185, 1, UC.calculate_exercise_level(5)))
     print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose weight"))
     format_meal_recommendations(meals)
 
