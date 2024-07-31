@@ -1,22 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
 .App {
   text-align: center;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .animated-title {
-  font-size: 3em; /* Increase the size of the title */
-  animation: pulse 2s infinite, colorfade 6s infinite; /* Adjusted timing for smoother color transition */
-  position: absolute; /* Position the title at the top */
+  font-size: 3em;
+  animation: pulse 2s infinite, colorfade 6s infinite;
+  position: absolute;
   top: 20px;
   width: 100%;
   text-align: center;
   margin: 0;
-  font-family: 'Poppins', sans-serif; 
+  font-family: 'Playwrite Argentina', sans-serif; 
+}
+
+.input-container {
+  position: absolute;
+  left: 20px;
+  top: 40%; /* Adjust as needed */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px; /* Spacing between elements */
+}
+
+.email-label,
+.weight-label,
+.height-label {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.email-input {
+  font-size: 1.2em;
+  padding: 8px;
+  border-radius: 20px;
+  border: 2px solid green;
+  width: 300px;
+}
+
+.weight-combobox,
+.height-combobox {
+  font-size: 1.2em;
+  padding: 8px;
+  border-radius: 20px;
+  border: 2px solid green;
+  width: 110px;
+}
+
+.email-input {
+  margin-bottom: 10px; /* Space below the email input */
+}
+
+.light-mode .email-input,
+.light-mode .weight-combobox,
+.light-mode .height-combobox {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode .email-input,
+.dark-mode .weight-combobox,
+.dark-mode .height-combobox {
+  background-color: #444;
+  color: white;
 }
 
 .light-mode {
@@ -102,15 +154,15 @@ input:checked + .slider:before {
 
 @keyframes colorfade {
   0% {
-    color: #00ff00; /* Light green */
+    color: #00ff00;
   }
   33% {
-    color: #66ff66; /* Slightly darker green */
+    color: #66ff66;
   }
   66% {
-    color: #009900; /* Dark green */
+    color: #009900;
   }
   100% {
-    color: #00ff00; /* Back to light green */
+    color: #00ff00;
   }
 }
