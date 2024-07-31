@@ -10,6 +10,7 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+      <h1 className="animated-title">Nutrition AI</h1>
       <div className="switch-container">
         <label className="switch">
           <input type="checkbox" onChange={toggleTheme} checked={darkMode} />
