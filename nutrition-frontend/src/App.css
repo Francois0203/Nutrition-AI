@@ -31,7 +31,13 @@
 
 .email-label,
 .weight-label,
-.height-label {
+.height-label,
+.hip-label,
+.waist-label,
+.age-label,
+.exercise-label,
+.radio-label,
+.option-label {
   font-size: 1.2em;
   font-weight: bold;
 }
@@ -41,11 +47,16 @@
   padding: 8px;
   border-radius: 20px;
   border: 2px solid green;
-  width: 300px;
+  width: 350px;
+  margin-bottom: 10px; /* Space below the email input */
 }
 
 .weight-combobox,
-.height-combobox {
+.height-combobox,
+.hip-combobox,
+.waist-combobox,
+.age-combobox,
+.exercise-combobox {
   font-size: 1.2em;
   padding: 8px;
   border-radius: 20px;
@@ -53,20 +64,24 @@
   width: 110px;
 }
 
-.email-input {
-  margin-bottom: 10px; /* Space below the email input */
-}
-
 .light-mode .email-input,
 .light-mode .weight-combobox,
-.light-mode .height-combobox {
+.light-mode .height-combobox,
+.light-mode .hip-combobox,
+.light-mode .waist-combobox,
+.light-mode .age-combobox,
+.light-mode .exercise-combobox {
   background-color: white;
   color: black;
 }
 
 .dark-mode .email-input,
 .dark-mode .weight-combobox,
-.dark-mode .height-combobox {
+.dark-mode .height-combobox,
+.dark-mode .hip-combobox,
+.dark-mode .waist-combobox,
+.dark-mode .age-combobox,
+.dark-mode .exercise-combobox {
   background-color: #444;
   color: white;
 }
@@ -78,6 +93,47 @@
 
 .dark-mode {
   background-color: #282c34;
+  color: white;
+}
+
+.goal-radio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between radio buttons */
+  margin-top: 15px; /* Space above the radio buttons */
+}
+
+.diet-radio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between radio buttons */
+  margin-top: 15px; /* Space above the radio buttons */
+}
+
+.radio-label input[type="radio"] {
+  margin-right: 10px; /* Space between radio button and label text */
+  transform: scale(1.2); /* Increase the size of the radio button */
+}
+
+.radio-label input[type="radio"]:checked + span {
+  color: green; /* Change label text color when checked */
+}
+
+.radio-label span {
+  transition: color 0.3s;
+}
+
+.radio-label input[type="radio"]:checked {
+  accent-color: green; /* Change radio button color when checked */
+}
+
+.light-mode .radio-label input[type="radio"] {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode .radio-label input[type="radio"] {
+  background-color: #444;
   color: white;
 }
 
@@ -128,7 +184,7 @@
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #4caf50;
 }
 
 input:checked + .slider:before {
