@@ -102,15 +102,15 @@ input:checked + .slider:before {
 
 @keyframes colorfade {
   0% {
-    color: green;
+    color: #00ff00; /* Light green */
   }
   33% {
-    color: blue;
+    color: #66ff66; /* Slightly darker green */
   }
   66% {
-    color: purple;
+    color: #009900; /* Dark green */
   }
   100% {
-    color: green;
+    color: #00ff00; /* Back to light green */
   }
 }
