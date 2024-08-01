@@ -14,14 +14,25 @@ def __main__():
     # goal = input("What would you like to achieve? ") # lose weight, gain weight, gain lean muscle, maintain weight
     # diet_type = input("What are your dietary preferences? ") # any, vegan, paleo, keto, mediterranean, dash
 
-    name = "Francois Meiring"
+    # name = "Francois Meiring"
+    # age = 22
+    # gender = 1
+    # waist_circumference = 87
+    # hip_circumference = 103
+    # weight = 85
+    # height = 185
+    # exercise_per_week = 7
+    # goal = "gain lean muscle"
+    # diet_type = "any" 
+
+    name = "Michael"
     age = 22
     gender = 1
-    waist_circumference = 87
-    hip_circumference = 103
-    weight = 85
-    height = 185
-    exercise_per_week = 7
+    waist_circumference = 83
+    hip_circumference = 107
+    weight = 77
+    height = 176
+    exercise_per_week = 5
     goal = "gain lean muscle"
     diet_type = "any" 
 
