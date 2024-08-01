@@ -27,7 +27,7 @@ function App() {
         </label>
         <span className="mode-label">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
       </div>
-      <div className="container"> {/* Added container class */}
+      <div className="container">
         <div className="input-container">
           {/* Input fields and radio buttons */}
           <div className="row">
@@ -243,6 +243,9 @@ function App() {
           <p><strong>Waist Circumference (cm):</strong> {waist}</p>
           <p><strong>Goal:</strong> {selectedGoal.replace(/_/g, ' ')}</p>
           <p><strong>Diet Type:</strong> {selectedDiet.replace(/_/g, ' ')}</p>
+        </div>
+        <div className="button-container">
+          <button className="button">Calculate Macros</button>
         </div>
       </div>
     </div>

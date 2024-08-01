@@ -1,3 +1,5 @@
+/* Existing styles */
+
 .App {
   text-align: center;
   min-height: 100vh;
@@ -21,7 +23,7 @@
 .container {
   display: flex;
   align-items: flex-start;
-  gap: 20px; /* Space between input and output containers */
+  gap: 20px;
 }
 
 .input-container {
@@ -29,6 +31,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .output-container {
@@ -36,9 +39,10 @@
   padding: 20px;
   border: 2px solid green;
   border-radius: 10px;
-  background-color: #f9f9f9; /* Default light mode color */
-  color: #000; /* Default light mode text color */
+  background-color: #f9f9f9;
+  color: #000;
   text-align: left;
+  margin-bottom: 20px;
 }
 
 /* Theme-specific styles */
@@ -240,4 +244,35 @@ input:checked + .slider:before {
   100% {
     color: #00ff00;
   }
+}
+
+.button-container {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.button {
+  width: 100%; /* Full width button */
+  padding: 10px;
+  border: 2px solid green; /* Ensure border is present */
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.light-mode .button {
+  background-color: white;
+  color: black;
+}
+
+.dark-mode .button {
+  background-color: black;
+  color: white;
+}
+
+.button:hover {
+  background-color: #4caf50;
 }
