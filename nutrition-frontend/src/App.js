@@ -292,15 +292,15 @@ function App() {
         {output && (
           <div className="output-container">
             <h2>Output</h2>
-            <p><strong>Email:</strong> {output.email || 'N/A'}</p>
-            <p><strong>Age:</strong> {output.age || 'N/A'}</p>
-            <p><strong>Exercise Days per Week:</strong> {output.exerciseDays || 'N/A'}</p>
-            <p><strong>Weight (kg):</strong> {output.weight || 'N/A'}</p>
-            <p><strong>Height (cm):</strong> {output.height || 'N/A'}</p>
-            <p><strong>Hip Circumference (cm):</strong> {output.hip || 'N/A'}</p>
-            <p><strong>Waist Circumference (cm):</strong> {output.waist || 'N/A'}</p>
-            <p><strong>Goal:</strong> {output.goal?.replace(/_/g, ' ') || 'N/A'}</p>
-            <p><strong>Diet Type:</strong> {output.diet?.replace(/_/g, ' ') || 'N/A'}</p>
+            <p><strong>BMI:</strong> {output.bmi || 'N/A'}</p>
+            <p><strong>BAI:</strong> {output.bai || 'N/A'}</p>
+            <p><strong>WHR:</strong> {output.whr || 'N/A'}</p>
+            <p><strong>Exercise Category:</strong> {output.exercise_category || 'N/A'}</p>
+            <p><strong>Body Fat:</strong> {output.body_fat || 'N/A'}</p>
+            <p><strong>Body Mass:</strong> {output.body_mass || 'N/A'}</p>
+            <p><strong>Maintenance Calories:</strong> {output.main_calories || 'N/A'}</p>
+            <p><strong>Optimal Macros:</strong> {output.optimal_macros || 'N/A'}</p>
+            <p><strong>Meals:</strong> {output.meals || 'N/A'}</p>
           </div>
         )}
       </div>
