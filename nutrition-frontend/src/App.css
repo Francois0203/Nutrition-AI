@@ -18,70 +18,74 @@
   font-family: 'Playwrite Argentina', sans-serif; 
 }
 
-.input-container {
-  position: absolute;
-  left: 20px;
-  top: 40%; /* Adjust as needed */
-  transform: translateY(-50%);
+.container {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
-  gap: 15px; /* Spacing between elements */
+  gap: 20px; /* Space between input and output containers */
 }
 
-.email-label,
-.weight-label,
-.height-label,
-.hip-label,
-.waist-label,
-.age-label,
-.exercise-label,
-.radio-label,
-.option-label {
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.output-container {
+  flex: 0 0 300px;
+  padding: 20px;
+  border: 2px solid green;
+  border-radius: 10px;
+  background-color: #f9f9f9; /* Default light mode color */
+  color: #000; /* Default light mode text color */
+  text-align: left;
+}
+
+/* Theme-specific styles */
+.light-mode .output-container {
+  background-color: #f9f9f9;
+  color: #000;
+}
+
+.dark-mode .output-container {
+  background-color: #444;
+  color: #fff;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.row label {
+  width: 180px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.email-input, .weight-combobox, .height-combobox, .hip-combobox, .waist-combobox, .age-combobox, .exercise-combobox {
   font-size: 1.2em;
-  font-weight: bold;
+  padding: 8px;
+  border-radius: 20px;
+  border: 2px solid green;
 }
 
 .email-input {
-  font-size: 1.2em;
-  padding: 8px;
-  border-radius: 20px;
-  border: 2px solid green;
   width: 350px;
-  margin-bottom: 10px; /* Space below the email input */
+  margin-bottom: 10px;
 }
 
-.weight-combobox,
-.height-combobox,
-.hip-combobox,
-.waist-combobox,
-.age-combobox,
-.exercise-combobox {
-  font-size: 1.2em;
-  padding: 8px;
-  border-radius: 20px;
-  border: 2px solid green;
-  width: 110px;
+.weight-combobox, .height-combobox, .hip-combobox, .waist-combobox, .age-combobox, .exercise-combobox {
+  width: 150px;
 }
 
-.light-mode .email-input,
-.light-mode .weight-combobox,
-.light-mode .height-combobox,
-.light-mode .hip-combobox,
-.light-mode .waist-combobox,
-.light-mode .age-combobox,
-.light-mode .exercise-combobox {
+.light-mode .email-input, .light-mode .weight-combobox, .light-mode .height-combobox, .light-mode .hip-combobox, .light-mode .waist-combobox, .light-mode .age-combobox, .light-mode .exercise-combobox {
   background-color: white;
   color: black;
 }
 
-.dark-mode .email-input,
-.dark-mode .weight-combobox,
-.dark-mode .height-combobox,
-.dark-mode .hip-combobox,
-.dark-mode .waist-combobox,
-.dark-mode .age-combobox,
-.dark-mode .exercise-combobox {
+.dark-mode .email-input, .dark-mode .weight-combobox, .dark-mode .height-combobox, .dark-mode .hip-combobox, .dark-mode .waist-combobox, .dark-mode .age-combobox, .dark-mode .exercise-combobox {
   background-color: #444;
   color: white;
 }
@@ -99,17 +103,39 @@
 .radio-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between radio buttons */
-  margin-top: 15px; /* Space above the radio buttons */
+  align-items: center;
+}
+
+.radio-label-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.radio-group .radio-container {
+  flex: 1;
 }
 
 .radio-label input[type="radio"] {
-  margin-right: 10px; /* Space between radio button and label text */
-  transform: scale(1.2); /* Increase the size of the radio button */
+  margin-right: 10px;
+  transform: scale(1.2);
 }
 
 .radio-label input[type="radio"]:checked + span {
-  color: green; /* Change label text color when checked */
+  color: green;
 }
 
 .radio-label span {
@@ -117,7 +143,7 @@
 }
 
 .radio-label input[type="radio"]:checked {
-  accent-color: green; /* Change radio button color when checked */
+  accent-color: green;
 }
 
 .light-mode .radio-label input[type="radio"] {
