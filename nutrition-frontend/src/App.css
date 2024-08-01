@@ -24,7 +24,7 @@
   top: 40%; /* Adjust as needed */
   transform: translateY(-50%);
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 15px; /* Spacing between elements */
 }
@@ -96,14 +96,7 @@
   color: white;
 }
 
-.goal-radio-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Space between radio buttons */
-  margin-top: 15px; /* Space above the radio buttons */
-}
-
-.diet-radio-container {
+.radio-container {
   display: flex;
   flex-direction: column;
   gap: 10px; /* Space between radio buttons */

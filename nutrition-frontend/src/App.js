@@ -10,8 +10,8 @@ function App() {
   const [age, setAge] = useState(22); // Default age
   const [exerciseDays, setExerciseDays] = useState(4); // Default exercise days
   const [email, setEmail] = useState(''); // State for email input
-  const [selectedGoal, setSelectedGoal] = useState('');
-  const [selectedDiet, setSelectedDiet] = useState('');
+  const [selectedGoal, setSelectedGoal] = useState('gain-lean-muscle');
+  const [selectedDiet, setSelectedDiet] = useState('any');
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -104,7 +104,7 @@ function App() {
           ))}
         </select>
         <label className="option-label">What is your goal?</label>
-        <div className="goal-radio-container">
+        <div className="radio-container">
           <label className="radio-label">
             <input 
               type="radio" 
@@ -147,7 +147,7 @@ function App() {
           </label>
         </div>
         <label className="option-label">What is your preferred diet type?</label>
-        <div className="diet-radio-container">
+        <div className="radio-container">
           <label className="radio-label">
             <input 
               type="radio" 
