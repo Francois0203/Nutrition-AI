@@ -25,17 +25,26 @@ def calculate():
         diet = data.get('diet')
         email = data.get('email')
 
-        # Calculations
-        meal_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "all_diets.csv"), ',')
+        # # Calculations
+        # bmi = UC.calculate_bmi(weight, height)
+        # bai = UC.calculate_bai(hip, height)
+        # whr = UC.calculate_whr(gender, waist, hip)
+        # body_fat = AUM.predict_body_fat(age, gender, weight, height, exercise_days, hip, waist)
+        # body_mass = AUM.predict_muscle_mass(age, gender, weight, height, exercise_days, hip, waist)
+        # exercise_category = UC.calculate_exercise_level(exercise_days)
+        # main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
+        # optimal_macros = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
+        # meals = AN.optimise_meals(goal, diet, optimal_macros, 3)
+
         bmi = UC.calculate_bmi(weight, height)
         bai = UC.calculate_bai(hip, height)
         whr = UC.calculate_whr(gender, waist, hip)
-        body_fat = 20
-        body_mass = 60
+        body_fat = AUM.predict_body_fat(age, gender, weight, height, exercise_days, hip, waist)
+        body_mass = AUM.predict_muscle_mass(age, gender, weight, height, exercise_days, hip, waist)
         exercise_category = UC.calculate_exercise_level(exercise_days)
         main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
-        optimal_macros = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
-        meals = AN.optimise_meals(meal_df, goal, diet, optimal_macros, 2)
+        optimal_macros = 'abc'
+        meals = 'xyz'
 
         # Return results
         result = {

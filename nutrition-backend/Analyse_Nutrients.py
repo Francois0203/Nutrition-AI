@@ -5,6 +5,9 @@ from pulp import *
 # Import custom libraries
 import Dataframe_Functions as DF, File_Handling as FH, User_Calculations as UC
 
+# Global variables
+MEAL_DF = DF.csv_to_dataframe(os.path.join(os.getcwd(), "nutrition-backend", "Resources", "Data", "all_diets.csv"), ',')
+
 # Create nutrient dataframe
 def create_nutrient_file(data_location, name):
     # Variables
@@ -134,7 +137,10 @@ def process_meal_calories(file_path):
     df["Calories"] = df["Protein(g)"]*PROTEIN_CALORIES_PER_GRAM + df["Carbs(g)"]*FAT_CALORIES_PER_GRAM + df["Fat(g)"]*CARB_CALORIES_PER_GRAM
     df.to_csv(file_path, index = False)  # index = False to avoid adding an index colum
 
-def optimise_meals(df, goal, diet_type, macros, num_meals):
+def optimise_meals(goal, diet_type, macros, num_meals):
+    global MEAL_DF
+    df = MEAL_DF
+
     # Filter by diet type (if specified)
     if diet_type.lower() != "any":
         df = df[df["Diet_type"].str.lower() == diet_type.lower()]
@@ -191,9 +197,8 @@ def __main__():
     #food_items = generate_food_items(healthy_df, 100, 2000, 70, 250)
     #display_food_items(food_items, healthy_df)
 
-    meal_df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", "all_diets.csv"), ',')
     data = [22, 1, 85, 173, 5, 67, 103]
-    meals = optimise_meals(meal_df, "lose weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
+    meals = optimise_meals("lose weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
     print(UC.calculate_maintenance_calories(22, 85, 185, 1, UC.calculate_exercise_level(5)))
     print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose weight"))
     format_meal_recommendations(meals)

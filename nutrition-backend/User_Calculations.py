@@ -14,7 +14,7 @@ def calculate_bmi(weight, height):
     elif 25 <= bmi < 30: classification = "Overweight"
     else: classification = "Obese"
 
-    return bmi, classification
+    return bmi
 
 # Calculate body adiposity index and classify accordingly
 def calculate_bai(hip_circumference, height):
@@ -27,7 +27,7 @@ def calculate_bai(hip_circumference, height):
     elif 25 < bai <= 30: classification = "Overweight"
     else: classification = "Obese"
 
-    return bai, classification
+    return bai
 
 # Calculate waist-to-hip ratio and classify accordingly
 def calculate_whr(gender, waist, hip):
@@ -43,7 +43,7 @@ def calculate_whr(gender, waist, hip):
         elif 0.8 < whr <= 0.84: classification = "Overweight"
         else: classification = "Obese"
 
-    return whr, classification
+    return whr
 
 def calculate_exercise_level(exercise_level):
     if (exercise_level == 0) or (exercise_level == 1) or (exercise_level == 2) or (exercise_level == 3):
