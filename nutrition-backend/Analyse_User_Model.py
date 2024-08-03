@@ -11,7 +11,7 @@ from sklearn.svm import SVR
 import Dataframe_Functions as DF, File_Handling as FH
 
 # Global Variables
-df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fit_data.csv'), ",") # Create dataframe
+df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "nutrition-backend", "Resources", "Data", 'fit_data.csv'), ",") # Create dataframe
 
 # Hyperparameter tuning for Random Forest
 PARAM_GRID = {
@@ -85,14 +85,18 @@ def train_muscle_mass():
 
     print("Model trained and saved successfully as model_muscle.pkl")
 
-def predict_body_fat(input):
+def predict_body_fat(age, gender, weight, height, exercise_week, waist, hips):
+    input = pd.DataFrame([[age, gender, weight, height, exercise_week, waist, hips]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns)
+
     # Open the fat model file
     with open(os.path.join(FH.get_working_directory(), "Resources", "Models", "model_fat.pkl"), "rb") as f:
         loaded_model = pickle.load(f)
 
     return loaded_model.predict(input)[0]
 
-def predict_muscle_mass(input):
+def predict_muscle_mass(age, gender, weight, height, exercise_week, waist, hips):
+    input = pd.DataFrame([[age, gender, weight, height, exercise_week, waist, hips]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns) 
+
     # Open the muscle model file
     with open(os.path.join(FH.get_working_directory(), "Resources", "Models", "model_muscle.pkl"), "rb") as f:
         loaded_model = pickle.load(f)
@@ -136,15 +140,13 @@ def get_significant_variables():
     plt.show()
 
 def __main__():
-    data = pd.DataFrame([[22, 1, 85, 185, 2, 87, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)"], axis = 1).columns) # Francois
-
     # Train body fat and muscle mass prediction models
     # train_body_fat()
     # train_muscle_mass()
 
     # Use trained models to predict body fat and muslce mass
-    body_fat = predict_body_fat(data)
-    muscle_mass = predict_muscle_mass(data)
+    body_fat = predict_body_fat(22, 1, 85, 185, 2, 87, 103)
+    muscle_mass = predict_muscle_mass(22, 1, 85, 185, 2, 87, 103)
     print(f"Predicted fat (%): {body_fat:.2f}, Predicted muscle (%): {muscle_mass:.2f}")
 
     get_significant_variables()
