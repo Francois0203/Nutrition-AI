@@ -3,18 +3,67 @@ import './App.css';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const [weight, setWeight] = useState(86); // Default weight
-  const [height, setHeight] = useState(185); // Default height
-  const [hip, setHip] = useState(87); // Default hip circumference
-  const [waist, setWaist] = useState(103); // Default waist circumference
-  const [age, setAge] = useState(22); // Default age
-  const [exerciseDays, setExerciseDays] = useState(4); // Default exercise days
-  const [email, setEmail] = useState(''); // State for email input
+  const [weight, setWeight] = useState(86);
+  const [height, setHeight] = useState(185);
+  const [hip, setHip] = useState(87);
+  const [waist, setWaist] = useState(103);
+  const [age, setAge] = useState(22);
+  const [exerciseDays, setExerciseDays] = useState(4);
+  const [email, setEmail] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('gain-lean-muscle');
   const [selectedDiet, setSelectedDiet] = useState('any');
+  const [output, setOutput] = useState(null);
+  const [error, setError] = useState(null);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
+  };
+
+  const handleCalculate = async () => {
+    setError(null); // Reset error state before making the request
+    try {
+      console.log('Sending request with data:', {
+        weight,
+        height,
+        hip,
+        waist,
+        age,
+        exerciseDays,
+        goal: selectedGoal,
+        diet: selectedDiet,
+        email,
+      });
+  
+      const response = await fetch('http://localhost:5000/calculate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          weight,
+          height,
+          hip,
+          waist,
+          age,
+          exerciseDays,
+          goal: selectedGoal,
+          diet: selectedDiet,
+          email,
+        }),
+      });
+  
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      console.log('Received data:', data);
+      setOutput(data);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('There was an error processing your request. Please try again.');
+    }
   };
 
   return (
@@ -232,21 +281,28 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="output-container">
-          <h2>Output</h2>
-          <p><strong>Email:</strong> {email}</p>
-          <p><strong>Age:</strong> {age}</p>
-          <p><strong>Exercise Days per Week:</strong> {exerciseDays}</p>
-          <p><strong>Weight (kg):</strong> {weight}</p>
-          <p><strong>Height (cm):</strong> {height}</p>
-          <p><strong>Hip Circumference (cm):</strong> {hip}</p>
-          <p><strong>Waist Circumference (cm):</strong> {waist}</p>
-          <p><strong>Goal:</strong> {selectedGoal.replace(/_/g, ' ')}</p>
-          <p><strong>Diet Type:</strong> {selectedDiet.replace(/_/g, ' ')}</p>
-        </div>
         <div className="button-container">
-          <button className="button">Calculate Macros</button>
+          <button className="button" onClick={handleCalculate}>Calculate Macros</button>
         </div>
+        {error && (
+          <div className="error-container">
+            <p>{error}</p>
+          </div>
+        )}
+        {output && (
+          <div className="output-container">
+            <h2>Output</h2>
+            <p><strong>BMI:</strong> {output.bmi || 'N/A'}</p>
+            <p><strong>BAI:</strong> {output.bai || 'N/A'}</p>
+            <p><strong>WHR:</strong> {output.whr || 'N/A'}</p>
+            <p><strong>Exercise Category:</strong> {output.exercise_category || 'N/A'}</p>
+            <p><strong>Body Fat:</strong> {output.body_fat || 'N/A'}</p>
+            <p><strong>Body Mass:</strong> {output.body_mass || 'N/A'}</p>
+            <p><strong>Maintenance Calories:</strong> {output.main_calories || 'N/A'}</p>
+            <p><strong>Optimal Macros:</strong> {output.optimal_macros || 'N/A'}</p>
+            <p><strong>Meals:</strong> {output.meals || 'N/A'}</p>
+          </div>
+        )}
       </div>
     </div>
   );
