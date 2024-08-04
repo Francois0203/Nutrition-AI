@@ -20,32 +20,31 @@ def process_meal_calories(file_path):
     df["Calories"] = df["Protein(g)"]*PROTEIN_CALORIES_PER_GRAM + df["Carbs(g)"]*FAT_CALORIES_PER_GRAM + df["Fat(g)"]*CARB_CALORIES_PER_GRAM
     df.to_csv(file_path, index = False)  # index = False to avoid adding an index colum
 
-def optimise_meals(goal, diet_type, macros, num_meals):
+def optimise_meals(goal, diet_type, num_meals, optimal_protein, optimal_carbs, optimal_fats):
     global MEAL_DF
-    df = MEAL_DF
 
     # Filter by diet type (if specified)
     if diet_type.lower() != "any":
-        df = df[df["Diet_type"].str.lower() == diet_type.lower()]
+        MEAL_DF = MEAL_DF[MEAL_DF["Diet_type"].str.lower() == diet_type.lower()]
 
     # Calculate macro ranges for each meal 
     macro_ranges = {
-        "Protein(g)": (macros["protein grams"] / num_meals * 0.8, macros["protein grams"] / num_meals * 1.2),  # 20% flexibility
-        "Carbs(g)": (macros["carb grams"] / num_meals * 0.8, macros["carb grams"] / num_meals * 1.2),
-        "Fat(g)": (macros["fat grams"] / num_meals * 0.8, macros["fat grams"] / num_meals * 1.2),
+        "Protein(g)": (optimal_protein / num_meals * 0.8, optimal_protein / num_meals * 1.2),  # 20% flexibility
+        "Carbs(g)": (optimal_carbs / num_meals * 0.8, optimal_carbs / num_meals * 1.2),
+        "Fat(g)": (optimal_fats / num_meals * 0.8, optimal_fats / num_meals * 1.2),
     }
 
     # Filter meals that fit within macro ranges
-    filtered_df = df[
-        (df["Protein(g)"] >= macro_ranges["Protein(g)"][0]) & (df["Protein(g)"] <= macro_ranges["Protein(g)"][1]) &
-        (df["Carbs(g)"] >= macro_ranges["Carbs(g)"][0]) & (df["Carbs(g)"] <= macro_ranges["Carbs(g)"][1]) &
-        (df["Fat(g)"] >= macro_ranges["Fat(g)"][0]) & (df["Fat(g)"] <= macro_ranges["Fat(g)"][1])
+    filtered_df = MEAL_DF[
+        (MEAL_DF["Protein(g)"] >= macro_ranges["Protein(g)"][0]) & (MEAL_DF["Protein(g)"] <= macro_ranges["Protein(g)"][1]) &
+        (MEAL_DF["Carbs(g)"] >= macro_ranges["Carbs(g)"][0]) & (MEAL_DF["Carbs(g)"] <= macro_ranges["Carbs(g)"][1]) &
+        (MEAL_DF["Fat(g)"] >= macro_ranges["Fat(g)"][0]) & (MEAL_DF["Fat(g)"] <= macro_ranges["Fat(g)"][1])
     ]
 
     # Prioritize meals based on goal
-    if goal.lower() == "lose weight":
+    if goal.lower() == "lose_weight":
         filtered_df = filtered_df.sort_values("Calories", ascending = True)
-    elif goal.lower() in ["gain weight", "gain lean muscle"]:
+    elif goal.lower() in ["gain_weight", "gain_lean_muscle"]:
         filtered_df = filtered_df.sort_values("Calories", ascending = False)
 
     # Sample meals (or all if less than requested amount are found)
@@ -72,9 +71,9 @@ def format_meal_recommendations(meal_list):
 
 def __main__():
     data = [22, 1, 85, 173, 5, 67, 103]
-    meals = optimise_meals("lose weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
+    meals = optimise_meals("lose_weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
     print(UC.calculate_maintenance_calories(22, 85, 185, 1, UC.calculate_exercise_level(5)))
-    print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose weight"))
+    print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose_weight"))
     format_meal_recommendations(meals)
 
 if __name__ == '__main__':
