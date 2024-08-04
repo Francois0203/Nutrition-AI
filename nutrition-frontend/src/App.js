@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [weight, setWeight] = useState(86);
   const [height, setHeight] = useState(185);
   const [hip, setHip] = useState(87);
@@ -10,9 +10,9 @@ function App() {
   const [age, setAge] = useState(22);
   const [exerciseDays, setExerciseDays] = useState(4);
   const [email, setEmail] = useState('');
-  const [selectedGoal, setSelectedGoal] = useState('gain-lean-muscle');
+  const [selectedGoal, setSelectedGoal] = useState('gain_lean_muscle');
   const [selectedDiet, setSelectedDiet] = useState('any');
-  const [output, setOutput] = useState(null);
+  const [output, setOutput] = useState('null');
   const [error, setError] = useState(null);
 
   const toggleTheme = () => {
@@ -299,7 +299,10 @@ function App() {
             <p><strong>Body Fat:</strong> {output.body_fat || 'N/A'}</p>
             <p><strong>Body Mass:</strong> {output.body_mass || 'N/A'}</p>
             <p><strong>Maintenance Calories:</strong> {output.main_calories || 'N/A'}</p>
-            <p><strong>Optimal Macros:</strong> {output.optimal_macros || 'N/A'}</p>
+            <p><strong>Optimal Protein grams:</strong> {output.optimal_protein || 'N/A'}</p>
+            <p><strong>Optimal Carb grams:</strong> {output.optimal_carbs || 'N/A'}</p>
+            <p><strong>Optimal Fat grams:</strong> {output.optimal_fats || 'N/A'}</p>
+            <p><strong>Total Calories:</strong> {output.total_calories || 'N/A'}</p>
             <p><strong>Meals:</strong> {output.meals || 'N/A'}</p>
           </div>
         )}
