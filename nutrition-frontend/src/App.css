@@ -20,11 +20,71 @@
   font-family: 'Playwrite Argentina', sans-serif; 
 }
 
-.container {
+/* .container {
   display: flex;
   align-items: flex-start;
   gap: 20px;
+} */
+
+/* CHANGES START HERE */
+/* Bra so die is net n meer generalized approach met basic media queries */
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
+
+.sub-container {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* n media query laat toe dat ons styles vir classes define
+wanneer die screen n sekere "widht" is. byvoorbeeld hier onder het
+ek net die flex direction van n paar goed verander en widths en so. Nou is dit meer
+responsive
+
+so
+TODO:
+-Make media queries for mobile phone sizes
+-Fix bugs to do with background not cropping on screen size (I suspect its something to do with the dark mode and light mode)
+-Experiment with shadows and what effect it can have on components. Try a light box-shadow
+-Experiment with hover effects, comment in the class below and see what happens when you hover over the output, nice small touch, just play with it and
+  see what you can do
+-*/
+
+/* Comment me in for hover effect on output */
+/* .sub-container :hover {
+  transform: scale(1.05);
+  transition: transform ease-in-out 0.4s;
+} */
+
+@media only screen and (max-width: 1150px) {
+  .sub-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .input-container {
+    margin-top: 10%;
+    gap: 40px;
+  }
+  .output-container {
+    width: 70%;
+  } 
+  .button-container {
+    width: 50%;
+  }
+}
+
+/* CHANGES END HERE */
 
 .input-container {
   display: flex;
@@ -248,7 +308,7 @@ input:checked + .slider:before {
 
 .button-container {
   margin-top: 20px;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .button {
