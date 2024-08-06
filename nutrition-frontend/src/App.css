@@ -1,5 +1,3 @@
-/* Existing styles */
-
 .App {
   text-align: center;
   min-height: 100vh;
@@ -20,15 +18,6 @@
   font-family: 'Playwrite Argentina', sans-serif; 
 }
 
-/* .container {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-} */
-
-/* CHANGES START HERE */
-/* Bra so die is net n meer generalized approach met basic media queries */
-
 .container {
   display: flex;
   align-items: center;
@@ -44,12 +33,7 @@
     align-items: center;
 }
 
-/* n media query laat toe dat ons styles vir classes define
-wanneer die screen n sekere "widht" is. byvoorbeeld hier onder het
-ek net die flex direction van n paar goed verander en widths en so. Nou is dit meer
-responsive
-
-so
+/* 
 TODO:
 -Make media queries for mobile phone sizes
 -Fix bugs to do with background not cropping on screen size (I suspect its something to do with the dark mode and light mode)
@@ -58,11 +42,10 @@ TODO:
   see what you can do
 -*/
 
-/* Comment me in for hover effect on output */
-/* .sub-container :hover {
+.sub-container :hover {
   transform: scale(1.05);
   transition: transform ease-in-out 0.4s;
-} */
+}
 
 @media only screen and (max-width: 1150px) {
   .sub-container {
@@ -84,8 +67,6 @@ TODO:
   }
 }
 
-/* CHANGES END HERE */
-
 .input-container {
   display: flex;
   flex-direction: column;
@@ -105,7 +86,6 @@ TODO:
   margin-bottom: 20px;
 }
 
-/* Theme-specific styles */
 .light-mode .output-container {
   background-color: #f9f9f9;
   color: #000;
