@@ -80,9 +80,6 @@ function App() {
         <span className="mode-label">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
       </div>
       <div className="container">
-        {/* ADDED SUB CONTAINER */}
-        {/* Check net hier bra ek het n sub container gemaak sodat jy die input en output
-            better kan position saam die button, die button is buite die sub container */}
         <div className='sub-container'>
           <div className="input-container">
             {/* Input fields and radio buttons */}

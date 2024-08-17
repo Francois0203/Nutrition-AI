@@ -23,6 +23,9 @@ def process_meal_calories(file_path):
 def optimise_meals(goal, diet_type, num_meals, optimal_protein, optimal_carbs, optimal_fats):
     global MEAL_DF
 
+    # Select only the necessary columns
+    MEAL_DF = MEAL_DF[["Diet_type", "Recipe_name", "Protein(g)", "Carbs(g)", "Fat(g)", "Calories"]]
+
     # Filter by diet type (if specified)
     if diet_type.lower() != "any":
         MEAL_DF = MEAL_DF[MEAL_DF["Diet_type"].str.lower() == diet_type.lower()]
@@ -43,14 +46,15 @@ def optimise_meals(goal, diet_type, num_meals, optimal_protein, optimal_carbs, o
 
     # Prioritize meals based on goal
     if goal.lower() == "lose_weight":
-        filtered_df = filtered_df.sort_values("Calories", ascending = True)
+        filtered_df = filtered_df.sort_values("Calories", ascending=True)
     elif goal.lower() in ["gain_weight", "gain_lean_muscle"]:
-        filtered_df = filtered_df.sort_values("Calories", ascending = False)
+        filtered_df = filtered_df.sort_values("Calories", ascending=False)
 
     # Sample meals (or all if less than requested amount are found)
-    recommended_meals = filtered_df.sample(n = min(num_meals, len(filtered_df))).to_dict(orient = "records")
+    recommended_meals = filtered_df.sample(n=min(num_meals, len(filtered_df))).to_dict(orient="records")
 
     return recommended_meals
+
 
 def format_meal_recommendations(meal_list):    
     if not meal_list:  # Check if list is empty
@@ -70,11 +74,7 @@ def format_meal_recommendations(meal_list):
         ))
 
 def __main__():
-    data = [22, 1, 85, 173, 5, 67, 103]
-    meals = optimise_meals("lose_weight", "any", UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "gain lean muscle"), 5)
-    print(UC.calculate_maintenance_calories(22, 85, 185, 1, UC.calculate_exercise_level(5)))
-    print(UC.calculate_optimal_macros(data[2], 55, data[4], UC.calculate_maintenance_calories(22, 87, 185, 1, UC.calculate_exercise_level(4)), "lose_weight"))
-    format_meal_recommendations(meals)
+    pass
 
 if __name__ == '__main__':
     __main__()

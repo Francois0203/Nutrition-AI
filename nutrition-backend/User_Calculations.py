@@ -96,7 +96,7 @@ def calculate_optimal_macros(weight, muscle_percent, exercise_per_week, tdee, go
         protein_per_kg += 0.4  # Increase protein for muscle building
         tdee *= 1.05  # Slight calorie surplus (5% increase)
     elif goal.lower() != "maintain_weight":
-        raise ValueError("Invalid goal. Please enter 'lose weight', 'gain weight', 'gain lean muscle', or 'maintain weight'.")
+        raise ValueError("Invalid goal. Please enter 'lose_weight', 'gain_weight', 'gain_lean_muscle', or 'maintain_weight'.")
 
     protein_grams = protein_per_kg * weight
 

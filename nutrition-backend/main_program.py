@@ -14,7 +14,6 @@ def __main__():
     # goal = input("What would you like to achieve? ") # lose weight, gain weight, gain lean muscle, maintain weight
     # diet_type = input("What are your dietary preferences? ") # any, vegan, paleo, keto, mediterranean, dash
 
-    name = "Francois Meiring"
     age = 22
     gender = 1
     waist = 87
@@ -22,7 +21,7 @@ def __main__():
     weight = 85
     height = 185
     exercise_days = 7
-    goal = "gain lean muscle"
+    goal = "gain_lean_muscle"
     diet = "any" 
 
     bmi = UC.calculate_bmi(weight, height)
@@ -33,7 +32,7 @@ def __main__():
     exercise_category = UC.calculate_exercise_level(exercise_days)
     main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
     optimal_macros = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
-    meals = AN.optimise_meals(goal, diet, optimal_macros, 3)
+    meals = AN.optimise_meals(goal, diet, 3, optimal_macros[0], optimal_macros[1], optimal_macros[2])
 
     print("BMI: ", bmi)
     print("BAI: ", bai)
