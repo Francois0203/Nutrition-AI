@@ -14,6 +14,7 @@ function App() {
   const [selectedDiet, setSelectedDiet] = useState('any');
   const [output, setOutput] = useState('null');
   const [error, setError] = useState(null);
+  const [isMale, setIsMale] = useState(true);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -32,6 +33,7 @@ function App() {
         goal: selectedGoal,
         diet: selectedDiet,
         email,
+        gender: isMale ? 'male' : 'female',
       });
   
       const response = await fetch('http://localhost:5000/calculate', {
@@ -49,6 +51,7 @@ function App() {
           goal: selectedGoal,
           diet: selectedDiet,
           email,
+          gender: isMale ? 1 : 0,
         }),
       });
   
@@ -284,10 +287,21 @@ function App() {
                 </div>
               </div>
             </div>
+            <div className="row">
+              <label htmlFor="gender" className="row-label">Gender:</label>
+              <input 
+                id="gender" 
+                type="checkbox" 
+                className="gender-checkbox" 
+                checked={isMale} 
+                onChange={(e) => setIsMale(e.target.checked)} 
+              />
+              <span>{isMale ? 'Male' : 'Female'}</span>
+            </div>
           </div>
         {output && (
           <div className="output-container">
-            <h2>Output</h2>
+            <h2>Personal Information</h2>
             <p><strong>BMI:</strong> {output.bmi || 'N/A'}</p>
             <p><strong>BAI:</strong> {output.bai || 'N/A'}</p>
             <p><strong>WHR:</strong> {output.whr || 'N/A'}</p>
@@ -298,6 +312,11 @@ function App() {
             <p><strong>Optimal Protein grams:</strong> {output.optimal_protein || 'N/A'}</p>
             <p><strong>Optimal Carb grams:</strong> {output.optimal_carbs || 'N/A'}</p>
             <p><strong>Optimal Fat grams:</strong> {output.optimal_fats || 'N/A'}</p>
+          </div>
+        )}
+        {output && (
+          <div className="output-container">
+            <h2>Daily Meal Information</h2>
             <p><strong>Total Calories:</strong> {output.total_calories || 'N/A'}</p>
             <p><strong>Meals:</strong> {output.meals || 'N/A'}</p>
           </div>

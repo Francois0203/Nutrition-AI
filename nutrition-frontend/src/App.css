@@ -124,12 +124,12 @@ TODO:
   width: 150px;
 }
 
-.light-mode .email-input, .light-mode .weight-combobox, .light-mode .height-combobox, .light-mode .hip-combobox, .light-mode .waist-combobox, .light-mode .age-combobox, .light-mode .exercise-combobox {
+.light-mode .email-input, .light-mode .weight-combobox, .light-mode .height-combobox, .light-mode .hip-combobox, .light-mode .waist-combobox, .light-mode .age-combobox, .light-mode .exercise-combobox, .light-mode .gender-checkbox {
   background-color: white;
   color: black;
 }
 
-.dark-mode .email-input, .dark-mode .weight-combobox, .dark-mode .height-combobox, .dark-mode .hip-combobox, .dark-mode .waist-combobox, .dark-mode .age-combobox, .dark-mode .exercise-combobox {
+.dark-mode .email-input, .dark-mode .weight-combobox, .dark-mode .height-combobox, .dark-mode .hip-combobox, .dark-mode .waist-combobox, .dark-mode .age-combobox, .dark-mode .exercise-combobox, .dark-mode .gender-checkbox {
   background-color: #444;
   color: white;
 }
@@ -254,6 +254,10 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+.gender-checkbox {
+  accent-color: green;
+}
+
 .mode-label {
   font-size: 16px;
   color: inherit;
@@ -288,7 +292,6 @@ input:checked + .slider:before {
 
 .button-container {
   margin-top: 20px;
-  /* width: 100%; */
 }
 
 .button {
