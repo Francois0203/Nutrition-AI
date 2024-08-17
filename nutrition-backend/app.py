@@ -34,8 +34,12 @@ def calculate():
         exercise_category = UC.calculate_exercise_level(exercise_days)
         main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
         optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
-        # meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
-        meals = 'xyz'
+
+        # Extract meal information to display separately
+        all_meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
+        meals = []
+
+        
 
         # Return results
         result = {
