@@ -18,7 +18,7 @@ def calculate():
         height = data.get('height')
         hip = data.get('hip')
         waist = data.get('waist')
-        gender = 1 # data.get('gender')
+        gender = data.get('gender')
         age = data.get('age')
         exercise_days = data.get('exerciseDays')
         goal = data.get('goal')
@@ -34,7 +34,8 @@ def calculate():
         exercise_category = UC.calculate_exercise_level(exercise_days)
         main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
         optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
-        meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
+        # meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
+        meals = 'xyz'
 
         # Return results
         result = {
