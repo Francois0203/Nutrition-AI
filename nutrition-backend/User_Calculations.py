@@ -87,22 +87,22 @@ def calculate_maintenance_calories(age, weight, height, gender, exercise_categor
 def calculate_optimal_macros(weight, muscle_percent, exercise_per_week, tdee, goal):
     protein_per_kg = 1.2 + (0.3 * muscle_percent / 100) + (0.05 * exercise_per_week)
     
-    if goal.lower() == "lose weight":
+    if goal.lower() == "lose_weight":
         protein_per_kg += 0.2  # Increase protein for satiety and muscle preservation
         tdee *= 0.85  # Create a calorie deficit (15% reduction)
-    elif goal.lower() == "gain weight":
+    elif goal.lower() == "gain_weight":
         tdee *= 1.15  # Create a calorie surplus (15% increase)
-    elif goal.lower() == "gain lean muscle":
+    elif goal.lower() == "gain_lean_muscle":
         protein_per_kg += 0.4  # Increase protein for muscle building
         tdee *= 1.05  # Slight calorie surplus (5% increase)
-    elif goal.lower() != "maintain weight":
+    elif goal.lower() != "maintain_weight":
         raise ValueError("Invalid goal. Please enter 'lose weight', 'gain weight', 'gain lean muscle', or 'maintain weight'.")
 
     protein_grams = protein_per_kg * weight
 
     # --- Fat ---
     # Adjusted slightly based on goal
-    if goal.lower() == "lose weight":
+    if goal.lower() == "lose_weight":
         fat_calories = 0.20 * tdee  # Lower fat for weight loss
     else:
         fat_calories = 0.25 * tdee  # 25% for other goals
@@ -113,15 +113,17 @@ def calculate_optimal_macros(weight, muscle_percent, exercise_per_week, tdee, go
     carb_calories = tdee - (protein_grams * 4) - fat_calories
     carb_grams = carb_calories / 4
 
-    return {
-        "protein grams": round(protein_grams),
-        "carb grams": round(carb_grams),
-        "fat grams": round(fat_grams),
-        "total calories": round(tdee)
-    }
+    # return {
+    #     "protein grams": round(protein_grams),
+    #     "carb grams": round(carb_grams),
+    #     "fat grams": round(fat_grams),
+    #     "total calories": round(tdee)
+    # }
+
+    return round(protein_grams), round(carb_grams), round(fat_grams), round(tdee)
 
 def __main__():
-    df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fitness.csv'), ",") # Create dataframe
+    #df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "Resources", "Data", 'fitness.csv'), ",") # Create dataframe
 
     #data = pd.DataFrame([[22, 1, 87, 185, 4, 85, 103]], columns = df.drop(["Body Fat(%)", "Muscle(%)", "Daily Average Calorie Intake", "Daily Average Protein Intake(g)", "Daily Average Fat Intake(g)" , "Daily Average Carb Intake(g)", "Daily Average Sugar Intake(g)"], axis = 1).columns) # Francois
     data = [22, 1, 87, 185, 4, 85, 103]
@@ -130,7 +132,7 @@ def __main__():
     main_cals = calculate_maintenance_calories(22, 87, 185, 1, calculate_exercise_level(4))
     print("Maintenance calories: ", main_cals)
 
-    print(calculate_optimal_macros(data[2], 55, data[4], main_cals, "gain lean muscle"))
+    print(calculate_optimal_macros(data[2], 55, data[4], main_cals, "gain_lean_muscle"))
 
 if __name__ == '__main__':
     __main__()

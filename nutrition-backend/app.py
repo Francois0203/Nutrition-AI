@@ -18,24 +18,14 @@ def calculate():
         height = data.get('height')
         hip = data.get('hip')
         waist = data.get('waist')
-        gender = 1 # data.get('gender')
+        gender = data.get('gender')
         age = data.get('age')
         exercise_days = data.get('exerciseDays')
         goal = data.get('goal')
         diet = data.get('diet')
         email = data.get('email')
 
-        # # Calculations
-        # bmi = UC.calculate_bmi(weight, height)
-        # bai = UC.calculate_bai(hip, height)
-        # whr = UC.calculate_whr(gender, waist, hip)
-        # body_fat = AUM.predict_body_fat(age, gender, weight, height, exercise_days, hip, waist)
-        # body_mass = AUM.predict_muscle_mass(age, gender, weight, height, exercise_days, hip, waist)
-        # exercise_category = UC.calculate_exercise_level(exercise_days)
-        # main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
-        # optimal_macros = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
-        # meals = AN.optimise_meals(goal, diet, optimal_macros, 3)
-
+        # Calculations
         bmi = UC.calculate_bmi(weight, height)
         bai = UC.calculate_bai(hip, height)
         whr = UC.calculate_whr(gender, waist, hip)
@@ -43,7 +33,8 @@ def calculate():
         body_mass = AUM.predict_muscle_mass(age, gender, weight, height, exercise_days, hip, waist)
         exercise_category = UC.calculate_exercise_level(exercise_days)
         main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
-        optimal_macros = 'abc'
+        optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
+        # meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
         meals = 'xyz'
 
         # Return results
@@ -55,7 +46,10 @@ def calculate():
             'body_mass': body_mass,
             'exercise_category': exercise_category,
             'main_calories': main_cals,
-            'optimal_macros': optimal_macros,
+            'optimal_protein': optimal_protein,
+            'optimal_carbs': optimal_carbs,
+            'optimal_fats': optimal_fats,
+            'total_calories': total_calories,
             'meals': meals
         }
 
