@@ -55,24 +55,6 @@ def optimise_meals(goal, diet_type, num_meals, optimal_protein, optimal_carbs, o
 
     return recommended_meals
 
-
-def format_meal_recommendations(meal_list):    
-    if not meal_list:  # Check if list is empty
-        print("No suitable meal recommendations found.")
-        return
-    
-    # Print header
-    print("{:<10} {:<35} {:<10} {:<10} {:<10} {:<10}".format(
-        "Diet", "Recipe", "Protein", "Carbs", "Fat", "Calories"
-    ))
-    print("-" * 85)  # Separator
-
-    # Print meal details
-    for meal in meal_list:
-        print("{:<10} {:<35} {:<10.1f} {:<10.1f} {:<10.1f} {:<10.1f}".format(
-            meal['Diet_type'], meal['Recipe_name'], meal['Protein(g)'], meal['Carbs(g)'], meal['Fat(g)'], meal['Calories']
-        ))
-
 def __main__():
     pass
 
