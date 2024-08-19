@@ -315,7 +315,24 @@ function App() {
           <div className="output-container">
             <h2>Daily Meal Information</h2>
             <p><strong>Total Calories:</strong> {output.total_calories || 'N/A'}</p>
-            <p><strong>Meals:</strong> {output.meals || 'N/A'}</p>
+            <h3>Meals:</h3>
+            {output.meals && output.meals.length > 0 ? (
+              <ul>
+                {output.meals.map((meal, index) => (
+                  <li key={index}>
+                    <p><strong>Diet Type:</strong> {meal.Diet_type || 'N/A'}</p>
+                    <p><strong>Recipe Name:</strong> {meal.Recipe_name || 'N/A'}</p>
+                    <p><strong>Protein (g):</strong> {meal['Protein(g)'] || 'N/A'}</p>
+                    <p><strong>Carbs (g):</strong> {meal['Carbs(g)'] || 'N/A'}</p>
+                    <p><strong>Fat (g):</strong> {meal['Fat(g)'] || 'N/A'}</p>
+                    <p><strong>Calories:</strong> {meal.Calories || 'N/A'}</p>
+                    <hr />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No meal information available.</p>
+            )}
           </div>
         )}
         </div>
