@@ -1,321 +1,226 @@
-.App {
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.animated-title {
-  font-size: 3em;
-  animation: pulse 2s infinite, colorfade 6s infinite;
-  position: absolute;
-  top: 20px;
-  width: 100%;
-  text-align: center;
-  margin: 0;
-  font-family: 'Playwrite Argentina', sans-serif; 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.sub-container {
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-/* 
-TODO:
--Make media queries for mobile phone sizes
--Fix bugs to do with background not cropping on screen size (I suspect its something to do with the dark mode and light mode)
--Experiment with shadows and what effect it can have on components. Try a light box-shadow
--Experiment with hover effects, comment in the class below and see what happens when you hover over the output, nice small touch, just play with it and
-  see what you can do
--*/
-
-.sub-container :hover {
-  transform: scale(1.05);
-  transition: transform ease-in-out 0.4s;
-}
-
-@media only screen and (max-width: 1150px) {
-  .sub-container {
+/* Page Container */
+.page-container {
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    justify-content: space-evenly;
     align-items: center;
-  }
-  .input-container {
-    margin-top: 10%;
-    gap: 40px;
-  }
-  .output-container {
-    width: 70%;
-  } 
-  .button-container {
-    width: 50%;
-  }
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
 }
 
+/* Title Container */
+.title-container {
+    margin-bottom: 20px;
+}
+
+.title-container h1 {
+    font-size: 2.5em;
+    text-align: center;
+}
+
+/* Video Container */
+.video-container {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+/* Input Container */
 .input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
 }
 
+/* Label Container */
+.label-container {
+    margin-bottom: 5px;
+}
+
+/* Textbox Container */
+.textbox-container {
+    margin-bottom: 15px;
+}
+
+.textbox-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Combobox Container */
+.combobox-container {
+    margin-bottom: 15px;
+}
+
+.combobox-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Switch Container */
+.switch-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.switch-container input[type="checkbox"] {
+    display: none; /* Hide the checkbox */
+}
+
+.switch-container .switch {
+    position: relative;
+    width: 60px;
+    height: 34px;
+    background-color: var(--switch-bg-color);
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Slider Dot */
+.switch-container .slider {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 26px;
+    height: 26px;
+    background-color: limegreen; /* Slider color */
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+/* When checked */
+.switch-container input[type="checkbox"]:checked + .switch {
+    background-color: var(--switch-checked-bg-color);
+}
+
+.switch-container input[type="checkbox"]:checked + .switch .slider {
+    transform: translateX(26px); /* Move the slider */
+}
+
+/* Radiogroup Container */
+.radiogroup-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.button-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Output Container */
 .output-container {
-  flex: 0 0 300px;
-  padding: 20px;
-  border: 2px solid green;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  color: #000;
-  text-align: left;
-  margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
 }
 
-.light-mode .output-container {
-  background-color: #f9f9f9;
-  color: #000;
+/* Error Container */
+.error-container {
+    color: red;
+    margin-top: 10px;
+    font-size: 0.9em;
 }
 
-.dark-mode .output-container {
-  background-color: #444;
-  color: #fff;
-}
-
-.row {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.row label {
-  width: 180px;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.email-input, .weight-combobox, .height-combobox, .hip-combobox, .waist-combobox, .age-combobox, .exercise-combobox {
-  font-size: 1.2em;
-  padding: 8px;
-  border-radius: 20px;
-  border: 2px solid green;
-}
-
-.email-input {
-  width: 350px;
-  margin-bottom: 10px;
-}
-
-.weight-combobox, .height-combobox, .hip-combobox, .waist-combobox, .age-combobox, .exercise-combobox {
-  width: 150px;
-}
-
-.light-mode .email-input, .light-mode .weight-combobox, .light-mode .height-combobox, .light-mode .hip-combobox, .light-mode .waist-combobox, .light-mode .age-combobox, .light-mode .exercise-combobox, .light-mode .gender-checkbox {
-  background-color: white;
-  color: black;
-}
-
-.dark-mode .email-input, .dark-mode .weight-combobox, .dark-mode .height-combobox, .dark-mode .hip-combobox, .dark-mode .waist-combobox, .dark-mode .age-combobox, .dark-mode .exercise-combobox, .dark-mode .gender-checkbox {
-  background-color: #444;
-  color: white;
-}
-
-.light-mode {
-  background-color: #ffffff;
-  color: #000000;
+/* Theme Variables */
+:root {
+    --bg-color: #ffffff; /* Light mode background */
+    --text-color: #000000; /* Light mode text */
+    --switch-bg-color: #ccc; /* Light mode switch background */
+    --switch-checked-bg-color: #007BFF; /* Checked switch background */
 }
 
 .dark-mode {
-  background-color: #282c34;
-  color: white;
+    background-color: #181818;
+    color: #ffffff;
 }
 
-.radio-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.light-mode {
+    background-color: #ffffff;
+    color: #000000;
 }
 
-.radio-label-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+/* Dark Theme Variables */
+body.dark-mode {
+    --bg-color: #181818; /* Dark mode background */
+    --text-color: #ffffff; /* Dark mode text */
 }
 
-.radio-options {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+body.dark-mode .switch-container .switch {
+    background-color: #444; /* Dark mode switch background */
 }
 
-.radio-group {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+body.dark-mode .switch-container input[type="checkbox"]:checked + .switch {
+    background-color: #007BFF; /* Dark mode checked switch background */
 }
 
-.radio-group .radio-container {
-  flex: 1;
-}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .title-container h1 {
+        font-size: 2em;
+    }
 
-.radio-label input[type="radio"] {
-  margin-right: 10px;
-  transform: scale(1.2);
-}
+    .input-container, .output-container {
+        max-width: 100%;
+    }
 
-.radio-label input[type="radio"]:checked + span {
-  color: green;
-}
+    .video-container {
+        max-width: 100%;
+    }
 
-.radio-label span {
-  transition: color 0.3s;
-}
-
-.radio-label input[type="radio"]:checked {
-  accent-color: green;
-}
-
-.light-mode .radio-label input[type="radio"] {
-  background-color: white;
-  color: black;
-}
-
-.dark-mode .radio-label input[type="radio"] {
-  background-color: #444;
-  color: white;
-}
-
-.switch-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  margin-right: 10px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #4caf50;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-.gender-checkbox {
-  accent-color: green;
-}
-
-.mode-label {
-  font-size: 16px;
-  color: inherit;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes colorfade {
-  0% {
-    color: #00ff00;
-  }
-  33% {
-    color: #66ff66;
-  }
-  66% {
-    color: #009900;
-  }
-  100% {
-    color: #00ff00;
-  }
-}
-
-.button-container {
-  margin-top: 20px;
-}
-
-.button {
-  width: 100%; /* Full width button */
-  padding: 10px;
-  border: 2px solid green; /* Ensure border is present */
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.light-mode .button {
-  background-color: white;
-  color: black;
-}
-
-.dark-mode .button {
-  background-color: black;
-  color: white;
-}
-
-.button:hover {
-  background-color: #4caf50;
+    .button-container button {
+        width: 100%;
+    }
 }
