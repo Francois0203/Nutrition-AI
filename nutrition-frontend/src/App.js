@@ -20,12 +20,12 @@ function App() {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
   const [isMale, setIsMale] = useState(true);
+  const [loading, setLoading] = useState(false); // Loading state
 
   const toggleTheme = () => {
-    setDarkMode(prevMode => !prevMode);
+    setDarkMode((prevMode) => !prevMode);
   };
 
-  // Effect to apply dark mode class to body
   useEffect(() => {
     document.body.classList.toggle('dark-mode', darkMode);
     document.body.classList.toggle('light-mode', !darkMode);
@@ -41,6 +41,7 @@ function App() {
 
   const handleCalculate = async () => {
     setError(null);
+    setLoading(true); // Set loading to true
     try {
       const response = await fetch('http://localhost:5000/calculate', {
         method: 'POST',
@@ -69,6 +70,8 @@ function App() {
       setOutput(data);
     } catch (error) {
       setError('There was an error processing your request. Please try again.');
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -78,7 +81,7 @@ function App() {
         return <Page1 darkMode={darkMode} email={email} setEmail={setEmail} />;
       case 2:
         return (
-          <Page2 
+          <Page2
             darkMode={darkMode}
             weight={weight}
             setWeight={setWeight}
@@ -98,7 +101,7 @@ function App() {
         );
       case 3:
         return (
-          <Page3 
+          <Page3
             darkMode={darkMode}
             selectedDiet={selectedDiet}
             setSelectedDiet={setSelectedDiet}
@@ -108,7 +111,7 @@ function App() {
         );
       case 4:
         return (
-          <Page4 
+          <Page4
             darkMode={darkMode}
             output={output}
             error={error}
@@ -122,24 +125,44 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'dark-mode' : 'light-mode'}`}>
-      <div className="title-container">
-        <h1 className="title-container">Nutrition AI</h1>
+      <div className="header">
+        <h1 className="title">Nutrition AI</h1>
       </div>
-      <div className="switch-container">
+
+      <div className="theme-toggle">
         <label className="switch">
           <input 
             type="checkbox" 
             onChange={toggleTheme} 
             checked={darkMode} 
           />
-          <span className="slider"></span>
+          <span className="slider round"></span>
         </label>
         <span className="mode-label">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
       </div>
-      {renderPage()}
-      <div className="button-container">
-        <button className="button" onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
-        <button className="button" onClick={handleNextPage} disabled={currentPage === 4}>Next</button>
+
+      <div className="content">
+        {loading ? <p>Loading...</p> : renderPage()}
+        {error && <div className="error-message">{error}</div>} {/* Display error message */}
+      </div>
+
+      <div className="navigation">
+        <button 
+          className="button prev" 
+          onClick={handlePrevPage} 
+          disabled={currentPage === 1} 
+          aria-label="Previous page"
+        >
+          Previous
+        </button>
+        <button 
+          className="button next" 
+          onClick={handleNextPage} 
+          disabled={currentPage === 4} 
+          aria-label="Next page"
+        >
+          Next
+        </button>
       </div>
     </div>
   );
