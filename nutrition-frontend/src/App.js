@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './App.css'; // Link to the CSS file
 import Page1 from './components/Page1';
 import Page2 from './components/Page2';
 import Page3 from './components/Page3';
@@ -129,14 +129,14 @@ function App() {
         <h1 className="title">Nutrition AI</h1>
       </div>
 
-      <div className="theme-toggle">
+      <div className="theme-toggle-checkbox">
         <label className="switch">
           <input 
             type="checkbox" 
             onChange={toggleTheme} 
             checked={darkMode} 
           />
-          <span className="slider round"></span>
+          <span className="slider"></span>
         </label>
         <span className="mode-label">{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
       </div>

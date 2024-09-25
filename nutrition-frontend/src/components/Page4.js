@@ -2,12 +2,12 @@ import React from 'react';
 
 const Page4 = ({ darkMode, output, error, handleCalculate }) => {
   return (
-    <div className="page-container"> {/* Changed to page-container */}
+    <div className="page-container"> {/* Container for the page */}
       <div className="title-container">
         <h2 className="page-title">Results</h2>
       </div>
 
-      <div className="output-container"> {/* Use output-container */}
+      <div className="output-container"> {/* Container for output results */}
         {error && <div className="error-container">{error}</div>}
         {output && (
           <>
@@ -50,7 +50,7 @@ const Page4 = ({ darkMode, output, error, handleCalculate }) => {
         )}
       </div>
 
-      <div className="button-container"> {/* Use button-container */}
+      <div className="button-container"> {/* Container for buttons */}
         <button className="calculate-button" onClick={handleCalculate}>
           Calculate Macros
         </button>

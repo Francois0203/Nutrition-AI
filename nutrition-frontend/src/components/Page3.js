@@ -2,13 +2,13 @@ import React from 'react';
 
 const Page3 = ({ darkMode, selectedDiet, setSelectedDiet, selectedGoal, setSelectedGoal }) => {
   return (
-    <div className="page-container"> {/* Changed to page-container */}
+    <div className="page-container"> {/* Container for the page */}
       <div className="title-container">
         <h2 className="page-title">Select Your Goals and Diet Type</h2>
       </div>
 
-      <div className="input-container"> {/* Changed to input-container */}
-        <div className="radiogroup-container"> {/* Use radiogroup-container for the goal section */}
+      <div className="input-container"> {/* Container for input elements */}
+        <div className="radiogroup-container"> {/* Radio group for goals */}
           <h3 className="section-title">Your Goal:</h3>
           {['lose_weight', 'gain_weight', 'gain_lean_muscle', 'maintain_weight'].map((goal) => (
             <div className="radio-option" key={goal}>
@@ -27,7 +27,7 @@ const Page3 = ({ darkMode, selectedDiet, setSelectedDiet, selectedGoal, setSelec
           ))}
         </div>
 
-        <div className="radiogroup-container"> {/* Use radiogroup-container for the diet section */}
+        <div className="radiogroup-container"> {/* Radio group for diet types */}
           <h3 className="section-title">Preferred Diet Type:</h3>
           {['paleo', 'vegan', 'keto', 'mediterranean', 'dash', 'any'].map((diet) => (
             <div className="radio-option" key={diet}>

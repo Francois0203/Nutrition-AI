@@ -18,13 +18,13 @@ const Page2 = ({
   setIsMale
 }) => {
   return (
-    <div className="page-container"> {/* Changed to page-container */}
+    <div className="page-container"> {/* Main container for page content */}
       <div className="title-container">
         <h2 className="page-title">Body Measurements</h2>
       </div>
 
-      <div className="input-container"> {/* Changed to input-container */}
-        <div className="radiogroup-container form-row"> {/* Changed to radiogroup-container */}
+      <div className="input-container"> {/* Container for input elements */}
+        <div className="radiogroup-container form-row"> {/* Radio group for age selection */}
           <label htmlFor="age" className="form-label">Age:</label>
           <select 
             id="age" 
@@ -92,7 +92,7 @@ const Page2 = ({
 
         <div className="form-row">
           <label className="form-label">Gender:</label>
-          <div className="switch-container form-gender-toggle"> {/* Changed to switch-container */}
+          <div className="switch-container form-gender-toggle"> {/* Gender toggle */}
             <input 
               type="checkbox" 
               checked={isMale} 
