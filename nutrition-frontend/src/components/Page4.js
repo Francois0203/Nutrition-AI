@@ -14,19 +14,19 @@ const Page4 = ({ darkMode, output, error, handleCalculate }) => {
             <div className="personal-info">
               <h3 className="section-title">Personal Information</h3>
               <div className="info-container">
-                <p><strong>BMI:</strong> <span className="highlight">{output.bmi || 'N/A'}</span></p>
-                <p><strong>Body Fat:</strong> <span className="highlight">{output.body_fat || 'N/A'}</span></p>
-                <p><strong>Maintenance Calories:</strong> <span className="highlight">{output.main_calories || 'N/A'}</span></p>
-                <p><strong>Optimal Protein (g):</strong> <span className="highlight">{output.optimal_protein || 'N/A'}</span></p>
-                <p><strong>Optimal Carbs (g):</strong> <span className="highlight">{output.optimal_carbs || 'N/A'}</span></p>
-                <p><strong>Optimal Fats (g):</strong> <span className="highlight">{output.optimal_fats || 'N/A'}</span></p>
+                <p><strong>BMI:</strong> {output.bmi || 'N/A'}</p>
+                <p><strong>Body Fat:</strong> {output.body_fat || 'N/A'}</p>
+                <p><strong>Maintenance Calories:</strong> {output.main_calories || 'N/A'}</p>
+                <p><strong>Optimal Protein (g):</strong> {output.optimal_protein || 'N/A'}</p>
+                <p><strong>Optimal Carbs (g):</strong> {output.optimal_carbs || 'N/A'}</p>
+                <p><strong>Optimal Fats (g):</strong> {output.optimal_fats || 'N/A'}</p>
               </div>
             </div>
 
             <div className="daily-meal-info">
               <h3 className="section-title">Daily Meal Information</h3>
               <div className="info-container">
-                <p><strong>Total Calories:</strong> <span className="highlight">{output.total_calories || 'N/A'}</span></p>
+                <p><strong>Total Calories:</strong> {output.total_calories || 'N/A'}</p>
                 {output.meals && output.meals.length > 0 ? (
                   <ul className="meal-list">
                     {output.meals.map((meal, index) => (
@@ -51,7 +51,7 @@ const Page4 = ({ darkMode, output, error, handleCalculate }) => {
       </div>
 
       <div className="button-container"> {/* Container for buttons */}
-        <button className="calculate-button" onClick={handleCalculate}>
+        <button className="button" onClick={handleCalculate}>
           Calculate Macros
         </button>
       </div>

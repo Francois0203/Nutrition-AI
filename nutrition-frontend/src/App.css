@@ -5,23 +5,34 @@
   box-sizing: border-box;
 }
 
+/* General Hover Animation */
+* {
+  transition: transform 0.3s ease, background-color 0.3s ease; /* For smooth hover animations */
+}
+
+/* Hover Effect */
+*:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+}
+
 /* Body Styles */
 body {
   font-family: Arial, sans-serif;
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme changes */
+  transition: background-color 0.6s, color 0.6s; 
 }
 
 /* Dark Mode Styles */
 .dark-mode {
-  background: linear-gradient(135deg, #121212, #1c1c1c); /* Dark gradient background for dark mode */
-  color: #e0e0e0; /* Light text for dark mode */
+  background: linear-gradient(135deg, #121212, #1c1c1c, #252525); /* Added subtle texture with gradient */
+  color: #e0e0e0; 
 }
 
 /* Light Mode Styles */
 .light-mode {
-  background: linear-gradient(135deg, #ffffff, #f0f0f0); /* Light gradient background for light mode */
-  color: #212121; /* Dark text for light mode */
+  background: linear-gradient(135deg, #ffffff, #f0f0f0, #e8e8e8); /* Light gradient with more variation */
+  color: #212121; 
 }
+
 
 /* App Container */
 .App {
@@ -29,24 +40,24 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  min-height: 100vh; /* Full viewport height */
+  min-height: 100vh; 
 }
 
 /* Header Styles */
 .header {
-  margin-bottom: 20px; /* Space below the header */
+  margin-bottom: 20px; 
 }
 
 .title {
-  font-size: 36px; /* Title size */
-  color: #28a745; /* Green accent color */
+  font-size: 36px; 
+  color: green; 
 }
 
 /* Theme Toggle Checkbox */
 .theme-toggle-checkbox {
-  margin-bottom: 20px; /* Space below theme toggle */
+  margin-bottom: 20px; 
   display: flex;
-  align-items: center; /* Center items vertically */
+  align-items: center; 
 }
 
 /* Switch Styles */
@@ -70,234 +81,241 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc; /* Default slider color */
-  transition: .4s; /* Animation for slider */
-  border-radius: 34px; /* Rounded edges for slider */
+  background-color: #ccc; 
+  transition: .6s; 
+  border-radius: 34px; 
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px; /* Height of the toggle */
-  width: 26px; /* Width of the toggle */
-  left: 4px; /* Positioning the toggle */
-  bottom: 4px; /* Positioning the toggle */
-  background-color: white; /* Color of the toggle */
-  border-radius: 50%; /* Rounded toggle */
-  transition: .4s; /* Animation for toggle */
+  height: 26px; 
+  width: 26px; 
+  left: 4px; 
+  bottom: 4px; 
+  background-color: white; 
+  border-radius: 50%; 
+  transition: 0.6s; 
 }
 
 input:checked + .slider {
-  background-color: #28a745; /* Green color for checked slider */
+  background-color: green; 
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px); /* Move the toggle to the right */
+  transform: translateX(26px); 
 }
 
 /* Content Area */
 .content {
-  width: 100%; /* Full width for content */
+  width: 100%; 
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content */
+  align-items: center; 
 }
 
 /* Button Styles */
 .button {
-  background-color: #28a745; /* Green background for buttons */
-  color: white; /* White text for buttons */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded edges */
-  padding: 10px 20px; /* Padding inside buttons */
-  margin: 5px; /* Margin between buttons */
-  cursor: pointer; /* Pointer cursor */
-  transition: background-color 0.3s; /* Smooth transition */
+  padding: 12px 24px; 
+  margin-top: 10px; 
+  width: 100%;
+  max-width: 200px; 
 }
 
 .button:hover {
-  background-color: #218838; /* Darker green on hover */
-}
-
-/* Calculate Macros Button Same as Previous/Next */
-.calculate-button {
-  background-color: #28a745; /* Green background */
-}
-
-.calculate-button:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: green; 
 }
 
 /* Error Message */
 .error-message {
-  color: red; /* Red color for error messages */
+  color: red; 
 }
 
 /* Page Container */
 .page-container {
   display: flex;
-  flex-direction: column; /* Stack contents vertically */
-  align-items: center; /* Center contents */
-  width: 100%; /* Full width */
+  flex-direction: column;
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%;
+  padding: 20px; 
+  max-width: 800px; 
+  margin: 0 auto; 
 }
 
 /* Title Container */
 .title-container {
-  margin-bottom: 20px; /* Space below title */
+  margin-bottom: 20px; 
 }
 
 /* Page Title */
 .page-title {
-  font-size: 24px; /* Larger font for titles */
-  color: #28a745; /* Green accent color */
+  font-size: 24px; 
+  color: green; 
 }
 
 /* Input Container */
 .input-container {
   display: flex;
-  flex-direction: column; /* Stack inputs vertically */
-  align-items: flex-start; /* Align items to the left */
-  width: 100%; /* Full width */
+  flex-direction: column;
+  justify-content: space-between; 
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px; 
 }
 
 /* Form Row */
 .form-row {
-  display: flex; /* Use flex for alignment */
-  align-items: center; /* Center vertically */
-  margin-bottom: 15px; /* Space between rows */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px; 
 }
 
 /* ComboBox */
 .combobox-container {
-  margin-left: 10px; /* Space between label and select */
-  border-radius: 5px; /* Rounded edges */
-  padding: 5px; /* Padding inside the select */
+  margin-left: 10px; 
+  border-radius: 5px; 
+  padding: 5px; 
   transition: border-color 0.3s; /* Animation for focus */
 }
 
 /* Dark Select */
 .dark-select {
-  background-color: #495057; /* Dark background for dark mode */
-  color: #fff; /* White text for dark mode */
-  border: 1px solid #28a745; /* Green border */
+  background-color: #495057; 
+  color: white; 
+  border: 1px solid green; 
 }
 
 /* Light Select */
 .light-select {
-  background-color: #f8f9fa; /* Light background for light mode */
-  color: #495057; /* Dark text for light mode */
-  border: 1px solid #28a745; /* Green border */
+  background-color: #f8f9fa; 
+  color: #495057; 
+  border: 1px solid green; 
 }
 
 /* Gender Checkbox */
 .gender-checkbox {
-  margin-left: 10px; /* Space from the label */
+  margin-left: 10px; 
 }
 
 /* Gender Label */
 .gender-label {
-  margin-left: 5px; /* Space from checkbox */
-  font-size: 16px; /* Font size for gender label */
-  color: #28a745; /* Green accent */
-  transition: color 0.3s; /* Transition for color change */
+  margin-left: 5px; 
+  font-size: 16px; 
+  transition: color 0.3s; /* Transition for colour change */
 }
 
 /* Gender Label Hover Effect */
 .gender-label:hover {
-  color: #0056b3; /* Change to blue on hover */
+  color: green; 
 }
 
 /* Nutrition Video */
 .nutrition-video {
-  width: 100%; /* Full width for video */
-  max-width: 600px; /* Max width for video */
-  border-radius: 10px; /* Rounded edges */
+  width: 100%; 
+  max-width: 600px; 
+  border-radius: 10px; 
 }
 
 /* Textbox Styles */
 .textbox-container {
-  border: 1px solid #28a745; /* Green border */
-  border-radius: 5px; /* Rounded edges */
-  padding: 10px; /* Padding inside textbox */
-  width: 100%; /* Full width */
-  max-width: 400px; /* Max width for textbox */
-  transition: border-color 0.3s; /* Smooth border transition */
+  width: 100%; 
+  max-width: 400px; 
+  padding: 10px;
+  margin-left: 10px; 
 }
 
 /* Dark Input */
 .dark-input {
-  background-color: #495057; /* Dark background for dark mode */
-  color: #ffffff; /* White text for dark mode */
+  background-color: #495057; 
+  color: white;
 }
 
 /* Light Input */
 .light-input {
-  background-color: #ffffff; /* Light background for light mode */
-  color: #212121; /* Dark text for light mode */
+  background-color: white; 
+  color: black; 
 }
 
 /* Output Container Styles */
 .output-container {
-  width: 100%; /* Full width for output container */
-  padding: 20px; /* Padding inside output */
-  background-color: rgba(255, 255, 255, 0.8); /* Light background for output with transparency */
-  border-radius: 8px; /* Rounded edges */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  margin-top: 20px; /* Space above output */
+  width: 100%; 
+  padding: 20px; 
+  background-color: rgba(255, 255, 255, 0.8); 
+  border-radius: 8px; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+  margin-top: 20px; 
 }
 
 .dark-mode .output-container {
-  background-color: rgba(40, 40, 40, 0.8); /* Dark background for output in dark mode */
+  background-color: rgba(40, 40, 40, 0.8); 
+}
+
+/* Dark Mode Buttons */
+.dark-mode .button {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid green; /* Keep the green accent */
+}
+
+/* Light Mode Button */
+.light-mode .button {
+  background-color: #f8f9fa;
+  color: #212121;
+  border: 1px solid green;
 }
 
 /* Personal Info Section */
 .personal-info, .daily-meal-info {
-  margin-bottom: 20px; /* Space below each section */
-  border: 1px solid #28a745; /* Green border for sections */
-  padding: 10px; /* Padding inside sections */
-  border-radius: 5px; /* Rounded edges */
+  margin-bottom: 20px; 
+  border: 1px solid green; 
+  padding: 10px; 
+  border-radius: 5px; 
 }
 
 /* Section Title */
 .section-title {
-  font-size: 20px; /* Font size for section titles */
-  color: #28a745; /* Green accent */
-  margin-bottom: 10px; /* Space below title */
+  font-size: 20px; 
+  color: green; 
+  margin-bottom: 10px; 
 }
 
 /* Highlight Text */
 .highlight {
-  color: #007bff; /* Blue color for highlighted text */
-  font-weight: bold; /* Bold font */
+  color: green; 
+  font-weight: bold; 
 }
 
 /* Meal List Styles */
 .meal-list {
-  list-style-type: none; /* Remove bullet points */
+  list-style-type: none; 
 }
 
 /* Meal Item Styles */
 .meal-item {
   border-bottom: 1px solid #ccc; /* Divider between meals */
-  padding: 10px 0; /* Padding for meal items */
+  padding: 10px 0;
 }
 
 /* Meal Divider */
 .meal-divider {
-  border: none; /* Remove default border */
-  height: 1px; /* Height of the divider */
-  background-color: #28a745; /* Green color for the divider */
+  border: none; 
+  height: 1px; 
+  background-color: green;
 }
 
 /* Radio Group Styles */
 .radio-group {
-  display: flex; /* Use flex for radio buttons */
-  align-items: center; /* Center vertically */
+  display: flex; 
+  align-items: center; 
 }
 
 /* Radio Button Hover Effect */
 .radio-group input[type="radio"]:hover + .radio-label {
-  color: #28a745; /* Change text color to green on hover */
+  color: green; /* Change text color to green on hover */
 }
 
 /* Animations */
@@ -311,7 +329,7 @@ input:checked + .slider:before {
 }
 
 .fade-in {
-  animation: fadeIn 0.5s; /* Fade in animation */
+  animation: fadeIn 1.5s; /* Fade in animation */
 }
 
 /* Responsive Styles */
@@ -326,5 +344,11 @@ input:checked + .slider:before {
 
   .output-container {
     padding: 15px; /* Adjust padding for output on small screens */
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-gap: 20px; 
   }
 }
