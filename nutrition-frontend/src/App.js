@@ -4,6 +4,7 @@ import Page1 from './components/Page1';
 import Page2 from './components/Page2';
 import Page3 from './components/Page3';
 import Page4 from './components/Page4';
+import videoSrc from './components/Dark-Background.mp4'; 
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -20,7 +21,7 @@ function App() {
   const [output, setOutput] = useState(null);
   const [error, setError] = useState(null);
   const [isMale, setIsMale] = useState(true);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
 
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
@@ -71,7 +72,7 @@ function App() {
     } catch (error) {
       setError('There was an error processing your request. Please try again.');
     } finally {
-      setLoading(false); // Set loading to false
+      setLoading(false); 
     }
   };
 
@@ -125,6 +126,12 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'dark-mode' : 'light-mode'}`}>
+      {/* Background video */}
+      <video autoPlay loop muted className="background-video">
+        <source src={videoSrc} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
       <div className="header">
         <h1 className="title">Nutrition AI</h1>
       </div>
@@ -143,7 +150,7 @@ function App() {
 
       <div className="content">
         {loading ? <p>Loading...</p> : renderPage()}
-        {error && <div className="error-message">{error}</div>} {/* Display error message */}
+        {error && <div className="error-message">{error}</div>} 
       </div>
 
       <div className="navigation">

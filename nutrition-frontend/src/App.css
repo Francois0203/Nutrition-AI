@@ -15,22 +15,28 @@
   transform: translateY(-3px); /* Slight lift on hover */
 }
 
+/* App styles */
+.app-container {
+  position: relative;
+  overflow: hidden; /* Prevent overflow */
+  min-height: 100vh; /* Full height of viewport */
+}
+
 /* Body Styles */
 body {
   font-family: Arial, sans-serif;
   transition: background-color 0.6s, color 0.6s; 
 }
 
-/* Dark Mode Styles */
+/* Dark and light mode styles */
 .dark-mode {
-  background: linear-gradient(135deg, #121212, #1c1c1c, #252525); /* Added subtle texture with gradient */
-  color: #e0e0e0; 
+  background-color: #2a2a2a;
+  color: #fff;
 }
 
-/* Light Mode Styles */
 .light-mode {
-  background: linear-gradient(135deg, #ffffff, #f0f0f0, #e8e8e8); /* Light gradient with more variation */
-  color: #212121; 
+  background-color: #f9f9f9;
+  color: #000;
 }
 
 /* App Container */
@@ -127,19 +133,32 @@ input:checked + .slider:before {
 
 /* Error Message */
 .error-message {
-  color: red; 
+  color: #ff4d4d;
+  background-color: #ffe6e6;
+  border: 1px solid #ff4d4d;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Results content styling */
+.results-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.results-content {
+  margin-top: 20px;
 }
 
 /* Page Container */
 .page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%;
-  padding: 20px; 
-  max-width: 800px; 
-  margin: 0 auto; 
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Title Container */
@@ -212,11 +231,30 @@ input:checked + .slider:before {
   color: green; 
 }
 
-/* Nutrition Video */
+/* Nutrition Logo Video */
 .nutrition-video {
   width: 100%; 
   max-width: 600px; 
   border-radius: 10px; 
+}
+
+/* Background video styles */
+.background-video {
+  position: absolute; /* Positioning for background */
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  object-fit: cover; /* Cover the area */
+  z-index: -1; /* Behind other elements */
+}
+
+/* Content overlay styles */
+.content-overlay {
+  position: relative;
+  z-index: 1; /* Above the background */
+  padding: 20px; /* Padding for content */
+  backdrop-filter: rgba(255, 255, 255, 0.8); /* Optional backdrop for better visibility */
 }
 
 /* Textbox Styles */
@@ -280,6 +318,13 @@ input:checked + .slider:before {
   font-size: 20px; 
   color: green; 
   margin-bottom: 10px; 
+  margin-top: 15px;
+}
+
+/* Info item styling */
+.info-item {
+  margin-bottom: 8px;
+  font-size: 16px;
 }
 
 /* Highlight Text */
@@ -288,9 +333,21 @@ input:checked + .slider:before {
   font-weight: bold; 
 }
 
-/* Meal List Styles */
+/* Meal list styling */
 .meal-list {
-  list-style-type: none; 
+  list-style-type: none;
+  padding: 0;
+}
+
+.meal-item {
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.meal-details {
+  margin-bottom: 5px;
 }
 
 /* Meal Item Styles */
