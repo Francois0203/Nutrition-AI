@@ -1,6 +1,7 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
+import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM, System_Functions as SF
 
 app = Flask(__name__)
 CORS(app)
@@ -32,7 +33,18 @@ def calculate():
         optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
         meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
 
+        # Generate pdf
+        pdf_path = r"C:\Personal Projects\Nutrition-AI\backend\Resources\Results"
+        pdf_name = email + " Results"
+        content = [bmi, bai, whr, body_fat, body_mass, exercise_category, main_cals, optimal_protein, optimal_fats, optimal_carbs, meals]
+        SF.generate_pdf(pdf_path, pdf_name, content)
+
         # Send email
+        #content = f"BMI: {bmi} \n BAI: {bai} \n Waist-toHip Ratio: {whr} \n\n Body Fat %: {body_fat} \n Muscle Mass %: {body_mass} \n Exercise Category: {exercise_category} \n Maintenance Calories: {main_cals} \n\n Optimal Macros: \n Protein: {optimal_protein} \n Fat: {optimal_fats} \n Carbs: {optimal_carbs} \n\n Rcommended Daily Meals: \n {meals}"
+        subject = "Nutrition AI Results"
+        body = "Your results from the Nutrition AI application are attached below. "
+        attachment = os.path.join(pdf_path, pdf_name + '.pdf')
+        SF.send_email(email, subject, body, attachment)
 
         # Return results to frontend
         result = {
