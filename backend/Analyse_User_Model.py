@@ -1,17 +1,11 @@
-import os, sys, pickle, pandas as pd, numpy as np, matplotlib.pyplot as plt, seaborn as sb
+import os, pickle, pandas as pd, numpy as np, matplotlib.pyplot as plt, seaborn as sb
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.svm import SVR
-
-# Import custom libraries
 import Dataframe_Functions as DF, File_Handling as FH
 
 # Global Variables
-df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "nutrition-backend", "Resources", "Data", 'fit_data.csv'), ",") # Create dataframe
+df = DF.csv_to_dataframe(os.path.join(os.getcwd(), "backend", "Resources", "Data", 'fit_data.csv'), ",") # Create dataframe
 
 # Hyperparameter tuning for Random Forest
 PARAM_GRID = {
@@ -29,15 +23,8 @@ def train_body_fat():
     # Split data
     X_train, X_test, y_fat_train, y_fat_test = train_test_split(X, y_fat, test_size = 0.2, random_state = 42)
 
-    # Choose and train the models
-    #model_fat = GridSearchCV(RandomForestRegressor(random_state = 42), param_grid, cv = 5)
+    # Train the model
     model_fat = RandomForestRegressor(n_estimators = 100, random_state = 42)
-    #model_fat = GradientBoostingRegressor(random_state = 42)
-    #model_fat = LinearRegression()
-    #model_fat = Ridge(alpha = 1)
-    #model_fat = Lasso(alpha = 1)
-    #model_fat = SVR(kernel = 'linear') # kernal = linear/rbf/poly
-
     model_fat.fit(X_train, y_fat_train)
 
     # Evaluate model performance
@@ -62,15 +49,8 @@ def train_muscle_mass():
     # Split data
     X_train, X_test, y_muscle_train, y_muscle_test = train_test_split(X, y_muscle, test_size = 0.2, random_state = 42)
 
-    # Choose and train the models
-    #model_muscle = GridSearchCV(RandomForestRegressor(random_state = 42), param_grid, cv = 5)
+    # Train the model
     model_muscle = RandomForestRegressor(n_estimators = 100, random_state = 42)
-    #model_muscle = GradientBoostingRegressor(random_state = 42)
-    #model_muscle = LinearRegression()
-    #model_muscle = Ridge(alpha = 1)
-    #model_muscle = Lasso(alpha = 1)
-    #model_muscle = SVR(kernel = 'linear')
-
     model_muscle.fit(X_train, y_muscle_train)
 
     # Evaluate model performance
@@ -141,8 +121,8 @@ def get_significant_variables():
 
 def __main__():
     # Train body fat and muscle mass prediction models
-    # train_body_fat()
-    # train_muscle_mass()
+    train_body_fat()
+    train_muscle_mass()
 
     # Use trained models to predict body fat and muslce mass
     body_fat = predict_body_fat(22, 1, 85, 185, 2, 87, 103)

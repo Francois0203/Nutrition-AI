@@ -1,8 +1,3 @@
-import os, sys, pandas as pd, numpy as np
-
-# Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH
-
 # Calculate body mass index and classify accordingly
 def calculate_bmi(weight, height):
     height = height / 100 # Convert height from cm to m

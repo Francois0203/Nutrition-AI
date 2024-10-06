@@ -1,4 +1,4 @@
-import sys, os, csv
+import os, csv
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog 
