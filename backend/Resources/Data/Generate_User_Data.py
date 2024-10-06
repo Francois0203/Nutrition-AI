@@ -1,5 +1,5 @@
 import csv
-import numpy as np, matplotlib.pyplot as plt, pandas as pd
+import numpy as np, pandas as pd
 from scipy.stats import norm, truncnorm
 
 def generate_data(n):
@@ -9,25 +9,36 @@ def generate_data(n):
     for _ in range(n):
         # ==================== Age, Gender ====================
         age = np.random.randint(18, 80)
-        gender = np.random.choice([0, 1])
+        gender = np.random.choice([0, 1])  # 0 for female, 1 for male
 
         # ==================== Weight, Height ====================
         weight = np.where(gender == 0,
-                np.random.normal(70, 15),  # Female
-                np.random.normal(85, 20))  # Male
+                np.random.normal(65, 10),  # Average female weight
+                np.random.normal(80, 15))  # Average male weight
         
         height = np.where(gender == 0,
-                np.random.normal(165, 10),  # Female
-                np.random.normal(175, 10))  # Male
+                np.random.normal(165, 7),  # Average female height
+                np.random.normal(175, 7))  # Average male height
         
-        # ==================== Waist, Hip, Exercise Per Week ====================
-        waist_circumference = weight / height * 45 + np.random.normal(0, 5)
-        hip_circumference = weight / height * 50 + np.random.normal(0, 5)
+        # ==================== Waist, Hip Circumference ====================
+        waist_circumference = (weight / height * 40) + np.random.normal(0, 5)
+        hip_circumference = (weight / height * 45) + np.random.normal(0, 5)
+        
+        # ==================== Exercise Per Week ====================
         exercise = np.random.choice([0, 1, 2, 3, 4, 5, 6, 7])
 
-        # ==================== Body Fat %, Muscle % ====================
-        body_fat = 0.1 * weight + 0.5 * exercise - 0.2 * age + np.where(gender == 0, 5, 10) + np.random.normal(0, 2)
-        muscle = 0.3 * weight + 0.2 * exercise + 0.1 * height - 0.2 * age + np.random.normal(0, 3)
+        # ==================== Body Fat % and Muscle % Calculation ====================
+        # Body Fat Percentage
+        body_fat = (1.20 * weight / ((height / 100) ** 2) + 0.23 * age - 10.8 * gender - 5.4 + 
+                    np.random.normal(0, 2))  # Using Boer formula
+
+        # Muscle Mass Percentage (approximated)
+        muscle = (0.4 * weight + 0.1 * height - 0.25 * age + 0.15 * exercise + 
+                  np.random.normal(0, 3)) / weight * 100  # As a percentage of total weight
+
+        # Clipping values to valid ranges
+        body_fat = np.clip(body_fat, 0, 100)  # Ensure body fat % is between 0 and 100
+        muscle = np.clip(muscle, 0, 100)  # Ensure muscle % is between 0 and 100
 
         data.append([age, gender, weight, height, muscle, body_fat, exercise, waist_circumference, hip_circumference])
 
@@ -35,7 +46,7 @@ def generate_data(n):
 
 def write_to_csv(data):
         # Write data to CSV
-    with open("Resources/Data/fit_data.csv", mode = 'w', newline = '') as file:
+    with open("fit_data.csv", mode = 'w', newline = '') as file:
         writer = csv.writer(file)
         writer.writerow([
             "Age",
@@ -54,7 +65,7 @@ def write_to_csv(data):
 
 def __main__():
     # Generate data entries 
-    num_entries = 20000
+    num_entries = 30000
     data_1 = generate_data(num_entries)
 
     write_to_csv(data_1)
