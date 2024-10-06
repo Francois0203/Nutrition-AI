@@ -12,11 +12,6 @@ const Page1 = ({ darkMode, email, setEmail }) => {
       </div>
 
       <div className="input-container">
-        <div className="label-container">
-          <label htmlFor="email" className="form-label">
-            Email:
-          </label>
-        </div>
         <div className="textbox-container">
           <input
             id="email"

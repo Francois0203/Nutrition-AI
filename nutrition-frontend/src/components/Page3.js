@@ -8,7 +8,7 @@ const Page3 = ({ darkMode, selectedDiet, setSelectedDiet, selectedGoal, setSelec
       </div>
 
       <div className="input-container">
-        <div className="radiogroup-container">
+        <div className="radio-group">
           <h3 className="section-title">Your Goal:</h3>
           {['lose_weight', 'gain_weight', 'gain_lean_muscle', 'maintain_weight'].map((goal) => (
             <div className="radio-option" key={goal}>
@@ -27,7 +27,7 @@ const Page3 = ({ darkMode, selectedDiet, setSelectedDiet, selectedGoal, setSelec
           ))}
         </div>
 
-        <div className="radiogroup-container">
+        <div className="radio-group">
           <h3 className="section-title">Preferred Diet Type:</h3>
           {['paleo', 'vegan', 'keto', 'mediterranean', 'dash', 'any'].map((diet) => (
             <div className="radio-option" key={diet}>

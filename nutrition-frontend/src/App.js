@@ -132,9 +132,8 @@ function App() {
         Your browser does not support the video tag.
       </video>
 
-
       <div className="header">
-        <h1 className="title">Nutrition AI</h1>
+        <h1 className="title animated-title">Nutrition AI</h1>
       </div>
 
       <div className="theme-toggle-checkbox">
