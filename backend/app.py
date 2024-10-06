@@ -1,11 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
-# Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH, User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
+import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
 
 app = Flask(__name__)
-
 CORS(app)
 
 @app.route('/calculate', methods=['POST'])
@@ -35,7 +32,9 @@ def calculate():
         optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
         meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
 
-        # Return results
+        # Send email
+
+        # Return results to frontend
         result = {
             'bmi': bmi,
             'bai': bai,
