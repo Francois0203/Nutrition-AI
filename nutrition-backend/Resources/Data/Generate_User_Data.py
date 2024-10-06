@@ -1,4 +1,4 @@
-import os, csv, random
+import csv
 import numpy as np, matplotlib.pyplot as plt, pandas as pd
 from scipy.stats import norm, truncnorm
 
