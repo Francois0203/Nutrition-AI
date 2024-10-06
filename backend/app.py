@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH, User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
+import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
 
 app = Flask(__name__)
 

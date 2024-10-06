@@ -1,8 +1,3 @@
-import os, sys, pandas as pd, numpy as np
-
-# Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH
-
 # Calculate body mass index and classify accordingly
 def calculate_bmi(weight, height):
     height = height / 100 # Convert height from cm to m
@@ -112,13 +107,6 @@ def calculate_optimal_macros(weight, muscle_percent, exercise_per_week, tdee, go
     # Remaining calories after protein and fat
     carb_calories = tdee - (protein_grams * 4) - fat_calories
     carb_grams = carb_calories / 4
-
-    # return {
-    #     "protein grams": round(protein_grams),
-    #     "carb grams": round(carb_grams),
-    #     "fat grams": round(fat_grams),
-    #     "total calories": round(tdee)
-    # }
 
     return round(protein_grams), round(carb_grams), round(fat_grams), round(tdee)
 

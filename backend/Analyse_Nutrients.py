@@ -1,12 +1,11 @@
-import os, sys, random
-import pandas as pd, numpy as np, tabulate as tb
+import os
 from pulp import *
 
 # Import custom libraries
-import Dataframe_Functions as DF, File_Handling as FH, User_Calculations as UC
+import Dataframe_Functions as DF
 
 # Global variables
-MEAL_DF = DF.csv_to_dataframe(os.path.join(os.getcwd(), "nutrition-backend", "Resources", "Data", "all_diets.csv"), ',')
+MEAL_DF = DF.csv_to_dataframe(os.path.join(os.getcwd(), "backend", "Resources", "Data", "all_diets.csv"), ',')
 
 def process_meal_calories(file_path):
     df = DF.csv_to_dataframe(file_path, ',')

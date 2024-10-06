@@ -1,5 +1,5 @@
 import React from 'react';
-import videoSrc from 'C:/Personal Projects/Nutrition-AI/nutrition-frontend/src/components/Nutrition-Logo.mp4';
+import videoSrc from 'C:/Personal Projects/Nutrition-AI/frontend/src/components/Nutrition-Logo.mp4';
 
 const Page1 = ({ darkMode, email, setEmail }) => {
   return (
