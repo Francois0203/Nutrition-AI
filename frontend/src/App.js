@@ -16,7 +16,7 @@ function App() {
   const [waist, setWaist] = useState(103);
   const [age, setAge] = useState(22);
   const [exerciseDays, setExerciseDays] = useState(4);
-  const [email, setEmail] = useState('francoismeiring0203@gmail.com');
+  const [email, setEmail] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('gain_lean_muscle');
   const [selectedDiet, setSelectedDiet] = useState('any');
   const [output, setOutput] = useState(null);
