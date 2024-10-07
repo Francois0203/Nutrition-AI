@@ -1,11 +1,9 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
-# Import custom libraries
-import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM
+import User_Calculations as UC, Analyse_Nutrients as AN, Analyse_User_Model as AUM, System_Functions as SF
 
 app = Flask(__name__)
-
 CORS(app)
 
 @app.route('/calculate', methods=['POST'])
@@ -34,6 +32,18 @@ def calculate():
         main_cals = UC.calculate_maintenance_calories(age, weight, height, gender, exercise_category)
         optimal_protein, optimal_carbs, optimal_fats, total_calories = UC.calculate_optimal_macros(weight, body_mass, exercise_days, main_cals, goal)
         meals = AN.optimise_meals(goal, diet, 3, optimal_protein, optimal_carbs, optimal_fats)
+
+        # Generate pdf
+        pdf_name = email + " Results"
+        pdf_path = os.path.join('backend', 'Resources', 'Results')
+        content = [bmi, bai, whr, body_fat, body_mass, exercise_category, main_cals, optimal_protein, optimal_fats, optimal_carbs, meals]
+        SF.generate_pdf(pdf_path, pdf_name, content)
+
+        # Email results
+        attachment_path = os.path.join(pdf_path, pdf_name + '.pdf')
+        subject = "Nutrition AI Results"
+        body = "The results are shown in the pdf file attached below."
+        SF.send_email(email, subject, body, attachment_path)
 
         # Return results
         result = {
