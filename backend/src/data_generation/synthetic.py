@@ -1,17 +1,15 @@
 """
+synthetic.py
+===========
 Generate synthetic body measurements data using normal distributions.
+
 Data is generated to closely match real-world population statistics.
+All measurements are generated with realistic correlations and constraints.
 """
 import random
-import argparse
 import numpy as np
-from typing import List, Dict
-from utils.csv_utils import append_to_csv, file_exists, get_row_count
+from typing import Dict
 
-
-# Configuration
-DATA_DIR = "Data"
-OUTPUT_FILE = f"{DATA_DIR}/Body Measurements.csv"
 
 # Normal distribution parameters (mean, std_dev) based on real population data
 # Age follows a uniform distribution to ensure diverse age representation
@@ -55,6 +53,26 @@ DISTRIBUTIONS = {
         'M': {'mean': 38.5, 'std': 2.5},
         'F': {'mean': 35.5, 'std': 2.0}
     },
+    'Forearm_cm': {
+        'M': {'mean': 28.5, 'std': 2.0},
+        'F': {'mean': 24.5, 'std': 1.5}
+    },
+    'Chest_cm': {
+        'M': {'mean': 100.0, 'std': 8.0},
+        'F': {'mean': 90.0, 'std': 8.0}
+    },
+    'Shoulder_cm': {
+        'M': {'mean': 41.5, 'std': 2.5},
+        'F': {'mean': 36.5, 'std': 2.0}
+    },
+    'Ankle_cm': {
+        'M': {'mean': 23.5, 'std': 1.5},
+        'F': {'mean': 21.5, 'std': 1.2}
+    },
+    'Bicep_cm': {
+        'M': {'mean': 35.0, 'std': 2.5},
+        'F': {'mean': 30.0, 'std': 2.0}
+    },
     'BodyFatPct': {
         'M': {'mean': 20.0, 'std': 5.0},   # Typical male body fat percentage
         'F': {'mean': 28.0, 'std': 5.5}    # Typical female body fat percentage
@@ -70,15 +88,19 @@ def clamp(value: float, min_val: float, max_val: float) -> float:
 def calculate_muscle_mass(weight: float, body_fat_pct: float) -> float:
     """
     Calculate approximate muscle mass based on weight and body fat percentage.
+    
+    Args:
+        weight: Body weight in kg
+        body_fat_pct: Body fat percentage
+        
+    Returns:
+        Estimated muscle mass in kg
     """
     lean_mass = weight * (1 - body_fat_pct / 100)
     # Muscle is approximately 42% of body weight with some variation
     muscle_pct = np.random.normal(0.42, 0.03)
     muscle_mass = weight * clamp(muscle_pct, 0.30, 0.55)
     return round(muscle_mass, 1)
-
-
-
 
 
 def generate_measurement() -> Dict:
@@ -141,6 +163,24 @@ def generate_measurement() -> Dict:
     calf = round(np.random.normal(loc=DISTRIBUTIONS['Calf_cm'][sex]['mean'], scale=DISTRIBUTIONS['Calf_cm'][sex]['std']))
     calf = clamp(calf, 28, 48)
     
+    forearm = round(np.random.normal(loc=DISTRIBUTIONS['Forearm_cm'][sex]['mean'], scale=DISTRIBUTIONS['Forearm_cm'][sex]['std']))
+    forearm = clamp(forearm, 20, 38)
+    
+    # Chest correlated with weight and height
+    chest_params = DISTRIBUTIONS['Chest_cm'][sex]
+    chest_mean_adjusted = chest_params['mean'] + (weight - weight_params['mean']) / weight_params['std'] * 2
+    chest = round(np.random.normal(chest_mean_adjusted, chest_params['std']))
+    chest = clamp(chest, 70, 140)
+    
+    shoulder = round(np.random.normal(loc=DISTRIBUTIONS['Shoulder_cm'][sex]['mean'], scale=DISTRIBUTIONS['Shoulder_cm'][sex]['std']))
+    shoulder = clamp(shoulder, 32, 52)
+    
+    ankle = round(np.random.normal(loc=DISTRIBUTIONS['Ankle_cm'][sex]['mean'], scale=DISTRIBUTIONS['Ankle_cm'][sex]['std']))
+    ankle = clamp(ankle, 18, 30)
+    
+    bicep = round(np.random.normal(loc=DISTRIBUTIONS['Bicep_cm'][sex]['mean'], scale=DISTRIBUTIONS['Bicep_cm'][sex]['std']))
+    bicep = clamp(bicep, 24, 48)
+    
     # Calculate derived measurements
     muscle_mass = calculate_muscle_mass(weight, body_fat_pct)
     
@@ -156,19 +196,30 @@ def generate_measurement() -> Dict:
         'UpperArm_cm': upper_arm,
         'Thigh_cm': thigh,
         'Calf_cm': calf,
+        'Forearm_cm': forearm,
+        'Chest_cm': chest,
+        'Shoulder_cm': shoulder,
+        'Ankle_cm': ankle,
+        'Bicep_cm': bicep,
         'BodyFatPct': body_fat_pct,
         'MuscleMass_kg': muscle_mass
     }
 
 
-def generate_data(num_records: int, output_file: str = OUTPUT_FILE) -> None:
+def generate_data(num_records: int, output_file: str) -> int:
     """
     Generate and save body measurement data.
     
     Args:
         num_records: Number of records to generate
         output_file: Path to the output CSV file
+        
+    Returns:
+        Number of rows added to the file
     """
+    from utils.csv_utils import append_to_csv, get_row_count
+    from utils.file_utils import file_exists
+    
     # Generate data
     print(f"Generating {num_records} records...")
     data = []
@@ -183,50 +234,8 @@ def generate_data(num_records: int, output_file: str = OUTPUT_FILE) -> None:
     total_rows = get_row_count(output_file)
     file_status = "Updated existing file" if file_exists(output_file) else "Created new file"
     
-    print(f"\n✓ {file_status}: {output_file}")
-    print(f"✓ Added {rows_added} new records")
-    print(f"✓ Total records in file: {total_rows}")
-
-
-def main():
-    """
-    Main function to handle command-line arguments and generate data.
-    """
-    parser = argparse.ArgumentParser(
-        description='Generate synthetic body measurements data',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  %(prog)s --count 100              Generate 100 records
-  %(prog)s -c 50 -o custom.csv      Generate 50 records to custom file
-  %(prog)s                          Generate 10 records (default)
-        """
-    )
+    print(f"\n[OK] {file_status}: {output_file}")
+    print(f"[OK] Added {rows_added} new records")
+    print(f"[OK] Total records in file: {total_rows}")
     
-    parser.add_argument(
-        '-c', '--count',
-        type=int,
-        default=10,
-        help='Number of records to generate (default: 10)'
-    )
-    
-    parser.add_argument(
-        '-o', '--output',
-        type=str,
-        default=OUTPUT_FILE,
-        help=f'Output file path (default: {OUTPUT_FILE})'
-    )
-    
-    args = parser.parse_args()
-    
-    # Validate input
-    if args.count <= 0:
-        print("Error: Count must be a positive number")
-        return
-    
-    # Generate data
-    generate_data(args.count, args.output)
-
-
-if __name__ == "__main__":
-    main()
+    return rows_added

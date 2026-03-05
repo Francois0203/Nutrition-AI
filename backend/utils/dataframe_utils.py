@@ -1,14 +1,12 @@
 """
-Utility helpers for creating pandas DataFrames from CSV files.
+DataFrame utility functions.
 
-This module provides a single, generalised function `csv_to_dataframe`
-that reads a CSV file whose first row contains the header and returns
-a pandas DataFrame. It exposes common read options so callers can
-customise parsing behaviour.
+Provides functions for reading various file formats into pandas DataFrames
+with common parsing options and error handling.
 """
 from typing import Optional, Sequence, Union, Dict
-import os
 import pandas as pd
+from .file_utils import file_exists
 
 
 def csv_to_dataframe(
@@ -23,7 +21,8 @@ def csv_to_dataframe(
     keep_default_na: bool = True,
     skip_blank_lines: bool = True,
 ) -> pd.DataFrame:
-    """Read a CSV file into a pandas DataFrame.
+    """
+    Read a CSV file into a pandas DataFrame.
 
     The function assumes the first row of the CSV file contains the
     column headers by default (`header_row=0`). It returns a pandas
@@ -50,7 +49,7 @@ def csv_to_dataframe(
         pd.errors.EmptyDataError: If the file is empty.
         pd.errors.ParserError: If parsing fails.
     """
-    if not os.path.exists(filepath):
+    if not file_exists(filepath):
         raise FileNotFoundError(f"CSV file not found: {filepath}")
 
     # pandas uses 0-based index for header rows; pass header_row directly
@@ -68,3 +67,53 @@ def csv_to_dataframe(
     )
 
     return df
+
+
+def read_csv(filepath: str) -> Optional[pd.DataFrame]:
+    """
+    Read a CSV file into a pandas DataFrame with default settings.
+    
+    Args:
+        filepath: Path to the CSV file
+        
+    Returns:
+        DataFrame if successful, None if file doesn't exist or error occurs
+    """
+    if not file_exists(filepath):
+        return None
+    
+    try:
+        return pd.read_csv(filepath)
+    except Exception as e:
+        print(f"Error reading CSV: {e}")
+        return None
+
+
+def dataframe_to_csv(
+    df: pd.DataFrame,
+    filepath: str,
+    index: bool = False,
+    encoding: str = 'utf-8',
+    **kwargs
+) -> bool:
+    """
+    Write a DataFrame to a CSV file.
+    
+    Args:
+        df: DataFrame to write
+        filepath: Path to the output CSV file
+        index: Whether to write row indices (default: False)
+        encoding: File encoding (default: 'utf-8')
+        **kwargs: Additional arguments passed to df.to_csv()
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        from .file_utils import ensure_directory
+        ensure_directory(filepath)
+        df.to_csv(filepath, index=index, encoding=encoding, **kwargs)
+        return True
+    except Exception as e:
+        print(f"Error writing CSV: {e}")
+        return False

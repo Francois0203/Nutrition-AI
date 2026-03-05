@@ -1,60 +1,13 @@
 """
-Reusable CSV file utility functions for data generation.
+CSV file utility functions for reading, writing, and appending data.
+
+Provides functions for common CSV operations like appending rows,
+getting next ID values, and row counts.
 """
-import os
 import csv
 import pandas as pd
 from typing import List, Optional
-
-
-def file_exists(filepath: str) -> bool:
-    """
-    Check if a file exists at the given path.
-    
-    Args:
-        filepath: Path to the file to check
-        
-    Returns:
-        True if file exists, False otherwise
-    """
-    return os.path.exists(filepath)
-
-
-def ensure_directory(filepath: str) -> None:
-    """
-    Ensure the directory for the given filepath exists.
-    Creates parent directories if they don't exist.
-    
-    Args:
-        filepath: Path to a file whose directory should exist
-    """
-    directory = os.path.dirname(filepath)
-    if directory and not os.path.exists(directory):
-        os.makedirs(directory, exist_ok=True)
-
-
-def ensure_trailing_newline(filepath: str) -> None:
-    """
-    Ensure the file ends with a newline character. If the file exists and does
-    not end with a newline, append one. This prevents appended CSV rows from
-    being placed on the same line as the last existing row.
-    """
-    try:
-        if not os.path.exists(filepath):
-            return
-        if os.path.getsize(filepath) == 0:
-            return
-        # Open in binary to safely check last byte
-        with open(filepath, 'rb') as f:
-            f.seek(-1, os.SEEK_END)
-            last = f.read(1)
-            if last not in (b"\n", b"\r"):
-                # Append a newline in text mode
-                with open(filepath, 'a', encoding='utf-8', newline='') as fa:
-                    fa.write('\n')
-    except (OSError, ValueError):
-        # If unable to check (e.g., small file), skip gracefully
-        return
+from .file_utils import file_exists, ensure_directory, ensure_trailing_newline
 
 
 def get_next_id(filepath: str, id_column: str = 'ID') -> int:
@@ -114,26 +67,6 @@ def append_to_csv(filepath: str, data: List[dict], create_if_missing: bool = Tru
         writer.writerows(data)
     
     return len(data)
-
-
-def read_csv(filepath: str) -> Optional[pd.DataFrame]:
-    """
-    Read a CSV file into a pandas DataFrame.
-    
-    Args:
-        filepath: Path to the CSV file
-        
-    Returns:
-        DataFrame if successful, None if file doesn't exist or error occurs
-    """
-    if not file_exists(filepath):
-        return None
-    
-    try:
-        return pd.read_csv(filepath)
-    except Exception as e:
-        print(f"Error reading CSV: {e}")
-        return None
 
 
 def get_row_count(filepath: str) -> int:
