@@ -25,7 +25,18 @@ from exploratory_data_analysis import (
 
 # Load the data
 print("Loading data...")
-df = pd.read_csv('Data/Body Measurements with Features.csv')
+# Resolve data directory relative to project root to avoid CWD issues
+data_dir = project_root / 'Data'
+data_file = data_dir / 'Body Measurements with Features.csv'
+if not data_file.exists():
+    # fallback to lowercase 'data' for environments using that folder
+    data_dir = project_root / 'data'
+    data_file = data_dir / 'Body Measurements with Features.csv'
+
+if not data_file.exists():
+    raise FileNotFoundError(f"Dataset not found: {data_file}\nPlease run scripts/generate_full_dataset.py or place the CSV in {project_root / 'Data'}")
+
+df = pd.read_csv(str(data_file))
 print(f"Loaded {len(df)} rows and {len(df.columns)} columns\n")
 
 # =============================================================================
@@ -105,20 +116,24 @@ print("SAVING RESULTS")
 print("="*80)
 
 # Save correlation matrix
-report['correlation_matrix'].to_csv('Data/correlation_matrix.csv')
-print("✓ Correlation matrix saved to 'Data/correlation_matrix.csv'")
+out_dir = project_root / 'Data'
+if not out_dir.exists():
+    out_dir = project_root / 'data'
+
+report['correlation_matrix'].to_csv(str(out_dir / 'correlation_matrix.csv'))
+print(f"✓ Correlation matrix saved to '{out_dir / 'correlation_matrix.csv'}'")
 
 # Save outlier summary
-report['outliers_iqr']['summary'].to_csv('Data/outlier_summary.csv', index=False)
-print("✓ Outlier summary saved to 'Data/outlier_summary.csv'")
+report['outliers_iqr']['summary'].to_csv(str(out_dir / 'outlier_summary.csv'), index=False)
+print(f"✓ Outlier summary saved to '{out_dir / 'outlier_summary.csv'}'")
 
 # Save basic statistics
-report['basic_statistics'].to_csv('Data/basic_statistics.csv')
-print("✓ Basic statistics saved to 'Data/basic_statistics.csv'")
+report['basic_statistics'].to_csv(str(out_dir / 'basic_statistics.csv'))
+print(f"✓ Basic statistics saved to '{out_dir / 'basic_statistics.csv'}'")
 
 if report['feature_importance_rf'] is not None:
-    report['feature_importance_rf'].to_csv('Data/feature_importance.csv', index=False)
-    print("✓ Feature importance saved to 'Data/feature_importance.csv'")
+    report['feature_importance_rf'].to_csv(str(out_dir / 'feature_importance.csv'), index=False)
+    print(f"✓ Feature importance saved to '{out_dir / 'feature_importance.csv'}'")
 
 print("\n" + "="*80)
 print("EDA COMPLETE!")
