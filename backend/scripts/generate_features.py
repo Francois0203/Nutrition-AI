@@ -25,11 +25,9 @@ from utils.file_utils import file_exists
 
 
 # Configuration
-DATA_DIR = "data"
-RAW_DATA_DIR = f"{DATA_DIR}/raw"
-PROCESSED_DATA_DIR = f"{DATA_DIR}/processed"
-DEFAULT_INPUT = f"{RAW_DATA_DIR}/Body Measurements.csv"
-DEFAULT_OUTPUT = f"{PROCESSED_DATA_DIR}/Body Measurements with Features.csv"
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+DEFAULT_INPUT = os.path.join(DATA_DIR, "Body Measurements.csv")
+DEFAULT_OUTPUT = os.path.join(DATA_DIR, "Body Measurements with Features.csv")
 
 
 def generate_features_csv(input_file: str, output_file: str) -> None:

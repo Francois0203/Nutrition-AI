@@ -19,9 +19,8 @@ from src.data_generation import generate_data
 
 
 # Configuration
-DATA_DIR = "data"
-RAW_DATA_DIR = f"{DATA_DIR}/raw"
-OUTPUT_FILE = f"{RAW_DATA_DIR}/Body Measurements.csv"
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+OUTPUT_FILE = os.path.join(DATA_DIR, "Body Measurements.csv")
 
 
 def main():
