@@ -1,9 +1,0 @@
-pandas
-numpy
-scikit-learn
-flask
-flask_cors
-pulp
-matplotlib
-tabulate
-seaborn

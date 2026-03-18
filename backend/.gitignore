@@ -1,4 +1,51 @@
+# Virtual environment
+venv/
+env/
+.venv/
 
-Resources/Models/model_fat.pkl
-Resources/Models/model_muscle.pkl
-/Resources/Models
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.local
+
+# Trained models (too large for git)
+models/
+*.pkl
+*.keras
+*.h5
+
+# Preprocessed data (generated)
+Data/preprocessed/
+Data/preprocessor.pkl
+
+# Logs
+*.log
+
+# Data files (except sample data)
+data/raw/*.csv
+data/processed/*.csv
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
